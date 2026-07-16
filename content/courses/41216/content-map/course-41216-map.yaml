@@ -1,0 +1,9 @@
+course_id: 41216
+course_code: "41216"
+title: กฎหมายอาญา
+status: course-shell-created
+source_material_status: source book files not yet imported
+modules: []
+notes:
+  - สร้างเฉพาะโครงพื้นฐาน ยังไม่ได้เพิ่ม statute notes/questions/rubrics เพราะยังไม่มีข้อมูล module หรือไฟล์ต้นทางใน repo
+

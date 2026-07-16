@@ -1,0 +1,25 @@
+id: q-1356-co-owner-exclusive-use
+course_id: 41215
+module_id: module-02-property
+level: 2
+type: subjective
+title: เจ้าของรวมใช้ทรัพย์แต่เพียงผู้เดียว
+source:
+  unit: 9
+  file: source-materials/raw/41215-9.pdf
+scenario: >
+  นาย ก. และนาย ข. เป็นเจ้าของรวมในบ้านหลังหนึ่ง นาย ก. เปลี่ยนกุญแจและใช้บ้านเพียงผู้เดียว ไม่ยอมให้นาย ข. เข้าใช้หรือรับประโยชน์จากบ้าน
+question: ให้วินิจฉัยว่านาย ข. ควรยกหลักกรรมสิทธิ์รวมและการใช้ทรัพย์รวมอย่างไร
+statutes: ["1356", "1360", "1364"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้เกี่ยวกับกรรมสิทธิ์รวม
+  - level: 2
+    kind: key_elements
+    text: แยกส่วนในกรรมสิทธิ์ การใช้ทรัพย์ร่วมกัน และทางออกหากใช้ร่วมกันไม่ได้
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 1356, 1360 และ 1364
+rubric_id: r-1356-co-owner-exclusive-use
+

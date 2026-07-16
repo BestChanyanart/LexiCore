@@ -1,0 +1,45 @@
+# OS/editor noise
+.DS_Store
+.idea/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build/test output
+.next/
+out/
+dist/
+build/
+coverage/
+.turbo/
+.cache/
+*.tsbuildinfo
+
+# Runtime logs and local orchestration state
+*.log
+.omx/
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Generated/local artifacts
+outputs/
+tmp/
+temp/
+
+# Binary/generated content authoring artifacts.
+# Keep canonical CSV/YAML/MD sources in content/courses.
+content/courses/**/question-bank/*.xlsx
+content/courses/**/question-bank/*.inspect.ndjson
+content/courses/**/question-bank/*preview.png
+
+# Raw source files may be copyrighted, large, or local-only.
+# Keep README.md and .gitkeep files in raw folders.
+content/courses/**/source-materials/raw/*
+!content/courses/**/source-materials/raw/.gitkeep

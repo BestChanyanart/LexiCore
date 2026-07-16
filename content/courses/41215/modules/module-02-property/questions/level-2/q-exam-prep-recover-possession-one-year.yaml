@@ -1,0 +1,28 @@
+id: q-exam-prep-recover-possession-one-year
+course_id: 41215
+module_id: module-02-property
+level: 2
+type: subjective
+status: ready
+title: "ฟ้องเอาคืนการครอบครองภายในหนึ่งปี"
+source:
+  unit: "12-13"
+  file: "source-materials/raw/ชุดเก็งอัตนัย-41215 ละเมิด ทรัพย์สิน _2-2568.pdf"
+  pages: "43-44"
+  source_status: "answer_text_extracted_question_reconstructed"
+scenario: >
+  นาย ก. บุกรุกเข้าไปครอบครองที่ดินมือเปล่าของนาย ข. โดยรู้อยู่แล้วว่าเป็นของนาย ข. ผ่านไปกว่า 10 ปี นาย ข. เพิ่งทราบเรื่องและขับไล่นาย ก. ออกจากที่ดิน
+question: "ให้วินิจฉัยว่านาย ก. มีข้อต่อสู้เกี่ยวกับกำหนดเวลาฟ้องเอาคืนการครอบครองตามมาตรา 1375 หรือไม่"
+statutes: ["1375"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: "โฟกัสการถูกแย่งการครอบครอง"
+  - level: 2
+    kind: key_elements
+    text: "อย่าดูเฉพาะความไม่สุจริตของผู้แย่ง ให้ดูอายุความ/กำหนดเวลาฟ้องเอาคืนด้วย"
+  - level: 3
+    kind: statute_number
+    text: "พิจารณามาตรา 1375 โดยเฉพาะกำหนดหนึ่งปี"
+rubric_id: r-exam-prep-recover-possession-one-year
+model_answer_id: a-exam-prep-recover-possession-one-year

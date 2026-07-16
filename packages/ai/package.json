@@ -1,0 +1,13 @@
+{
+  "name": "@lexicore/ai",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "tsc -p tsconfig.json --noEmit",
+    "test": "vitest"
+  },
+  "dependencies": {},
+  "devDependencies": {}
+}
+

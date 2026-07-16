@@ -1,0 +1,19 @@
+{
+  "name": "lexicore",
+  "private": true,
+  "packageManager": "pnpm@9.0.0",
+  "scripts": {
+    "dev": "pnpm --filter @lexicore/web dev",
+    "build": "pnpm -r build",
+    "lint": "pnpm -r lint",
+    "test": "pnpm -r test",
+    "build:trial-data": "node scripts/build-writing-question-table-data.mjs",
+    "validate:content": "tsx scripts/validate-content.ts",
+    "import:content": "tsx scripts/import-content.ts",
+    "generate:question-index": "tsx scripts/generate-question-index.ts"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}

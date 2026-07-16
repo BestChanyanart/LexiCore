@@ -1,0 +1,21 @@
+id: module-01-torts-unjust-enrichment
+title: กฎหมายลักษณะละเมิด จัดการงานนอกสั่ง และลาภมิควรได้
+topics:
+  - id: tort-self-liability
+    title: ความรับผิดเพื่อละเมิดในการกระทำของตนเอง
+    statutes: ["420", "423", "428", "432"]
+  - id: vicarious-liability
+    title: ความรับผิดในการกระทำของบุคคลอื่น
+    statutes: ["425", "429"]
+  - id: liability-from-property
+    title: ความรับผิดเกิดจากทรัพย์
+    statutes: ["433", "434", "437"]
+  - id: compensation-and-defenses
+    title: ค่าสินไหมทดแทนและการยกเว้นความรับผิดเพื่อละเมิด
+    statutes: ["438"]
+  - id: management-without-mandate
+    title: จัดการงานนอกสั่ง
+    statutes: ["395", "401"]
+  - id: unjust-enrichment
+    title: ลาภมิควรได้
+    statutes: ["406"]

@@ -1,0 +1,16 @@
+chapter: 1
+title: พื้นฐานความรับผิดเพื่อละเมิด
+source_files:
+  - ../raw/chapter-01.pdf
+modules:
+  - module-01-torts-unjust-enrichment
+statutes: ["420", "423"]
+learning_objectives:
+  - ระบุองค์ประกอบของมาตรา 420 ได้
+  - แยกจงใจและประมาทเลินเล่อได้
+  - ปรับข้อเท็จจริงเข้ากับองค์ประกอบความเสียหายและเหตุสัมพันธ์ได้
+question_targets:
+  level_1: 5
+  level_2: 3
+  level_3: 1
+

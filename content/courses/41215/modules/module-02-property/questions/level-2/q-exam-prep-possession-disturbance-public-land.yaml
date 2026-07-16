@@ -1,0 +1,28 @@
+id: q-exam-prep-possession-disturbance-public-land
+course_id: 41215
+module_id: module-02-property
+level: 2
+type: subjective
+status: ready
+title: "รบกวนการครอบครองในที่ดินสาธารณสมบัติ"
+source:
+  unit: "12-13"
+  file: "source-materials/raw/ชุดเก็งอัตนัย-41215 ละเมิด ทรัพย์สิน _2-2568.pdf"
+  pages: "38-39"
+  source_status: "answer_text_extracted_question_reconstructed"
+scenario: >
+  ดินเข้าไปทำสวนในที่ดินซึ่งเป็นสาธารณสมบัติของแผ่นดิน ต่อมาแดน เจ้าของที่ดินมือเปล่าข้างเคียง ทำทางเดินผ่านสวนของดินโดยไม่ได้รับอนุญาต
+question: "ให้วินิจฉัยว่าดินซึ่งครอบครองทำประโยชน์อยู่ก่อน จะยกสิทธิเพื่อปลดเปลื้องการรบกวนต่อแดนได้หรือไม่"
+statutes: ["1374", "1304"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: "โฟกัสสิทธิครอบครองและการถูกรบกวน"
+  - level: 2
+    kind: key_elements
+    text: "แยกผลของการครอบครองสาธารณสมบัติเมื่อเทียบกับรัฐ ออกจากผลระหว่างเอกชนด้วยกัน"
+  - level: 3
+    kind: statute_number
+    text: "พิจารณามาตรา 1374 และหลักสาธารณสมบัติของแผ่นดิน"
+rubric_id: r-exam-prep-possession-disturbance-public-land
+model_answer_id: a-exam-prep-possession-disturbance-public-land

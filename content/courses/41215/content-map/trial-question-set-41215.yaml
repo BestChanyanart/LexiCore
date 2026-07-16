@@ -1,0 +1,53 @@
+id: trial-question-set-41215-v1
+course_id: 41215
+title: ชุดโจทย์ทดลองใช้จริงจากเนื้อหา 41215
+status: draft-for-internal-testing
+source_units:
+  - unit: 1
+    file: source-materials/raw/41215-1.pdf
+    focus: ความรับผิดเพื่อละเมิดในการกระทำของตนเอง
+  - unit: 4
+    file: source-materials/raw/41215-4.pdf
+    focus: ค่าสินไหมทดแทนและนิรโทษกรรม
+  - unit: 5
+    file: source-materials/raw/41215-5.pdf
+    focus: จัดการงานนอกสั่งและลาภมิควรได้
+  - unit: 8
+    file: source-materials/raw/41215-8.pdf
+    focus: ทรัพยสิทธิและบุคคลสิทธิ
+  - unit: 9
+    file: source-materials/raw/41215-9.pdf
+    focus: กรรมสิทธิ์และกรรมสิทธิ์รวม
+  - unit: 12
+    file: source-materials/raw/41215-12.pdf
+    focus: สิทธิครอบครองและครอบครองปรปักษ์
+  - unit: 13
+    file: source-materials/raw/41215-13.pdf
+    focus: ภาระจำยอม
+  - unit: 14
+    file: source-materials/raw/41215-14.pdf
+    focus: สิทธิอาศัย สิทธิเหนือพื้นดิน สิทธิเก็บกิน
+  - unit: 15
+    file: source-materials/raw/41215-15.pdf
+    focus: การได้มาซึ่งอสังหาริมทรัพย์หรือทรัพยสิทธิ
+questions_added:
+  - modules/module-01-torts-unjust-enrichment/questions/level-1/q-395-management-without-mandate-elements.yaml
+  - modules/module-01-torts-unjust-enrichment/questions/level-2/q-395-neighbor-roof-repair.yaml
+  - modules/module-01-torts-unjust-enrichment/questions/level-2/q-406-mistaken-payment.yaml
+  - modules/module-01-torts-unjust-enrichment/questions/level-2/q-exam-tort-employer-vehicle.yaml
+  - modules/module-01-torts-unjust-enrichment/questions/level-2/q-438-compensation-restoration.yaml
+  - modules/module-02-property/questions/level-1/q-8-real-vs-personal-rights.yaml
+  - modules/module-02-property/questions/level-1/q-14-other-real-rights-matching.yaml
+  - modules/module-02-property/questions/level-2/q-1336-owner-obstruction.yaml
+  - modules/module-02-property/questions/level-2/q-1356-co-owner-exclusive-use.yaml
+  - modules/module-02-property/questions/level-2/q-1402-habitation-registration.yaml
+  - modules/module-02-property/questions/level-2/q-exam-prep-possession-disturbance-public-land.yaml
+  - modules/module-02-property/questions/level-2/q-exam-prep-recover-possession-one-year.yaml
+  - modules/module-02-property/questions/level-3/q-15-unregistered-real-right-third-party.yaml
+  - modules/module-02-property/questions/level-3/q-exam-prep-adverse-possession-transfer-time.yaml
+notes:
+  - สร้างจากหัวข้อและแนวคิดที่ extract จาก PDF ต้นทาง แต่ยังควรให้ผู้สอนตรวจทานก่อนใช้กับผู้เรียนจริง
+  - ไม่คัดลอกข้อความยาวจาก PDF ต้นทาง ใช้เป็นโจทย์และ rubric ที่เขียนใหม่สำหรับฝึก
+  - เพิ่มโจทย์แนวเก็งจากหน้าแรกของไฟล์ชุดเก็งอัตนัย ซึ่งระบุหน่วยและมาตราที่เน้นสอบ
+  - เพิ่มฐานข้อมูลข้อเขียนจากไฟล์เก็งไว้ที่ question-bank/subjective-question-bank-41215.xlsx และ CSV คู่กัน
+  - ไฟล์เก็งส่วนใหญ่เป็นภาพสแกนและเครื่องนี้ไม่มี OCR ภาษาไทย จึงแยกสถานะ ready กับ needs_ocr_or_manual_review ใน question bank

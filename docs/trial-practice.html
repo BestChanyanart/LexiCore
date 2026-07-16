@@ -1,0 +1,2144 @@
+<!doctype html>
+<html lang="th">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LexiCore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #f8f5ff;
+        --surface: #fffefe;
+        --ink: #344054;
+        --muted: #667085;
+        --line: #eadff7;
+        --primary: #b692f6;
+        --primary-ink: #2d1f54;
+        --soft: #f1e9ff;
+        --soft-blue: #eaf6ff;
+        --soft-mint: #eafaf1;
+        --highlight: #fff0a8;
+        --practice-font-size: 1rem;
+        --warn: #9c6f2f;
+        --bad: #b54708;
+        --good: #16835f;
+        --shadow: 0 12px 30px rgba(74, 58, 105, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--ink);
+        font-family: "Kanit", ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(135deg, #fde7ef 0%, #ede7ff 48%, #e3f6ff 100%);
+        color: #3f315f;
+        padding: 28px 20px;
+        border-bottom: 1px solid rgba(182, 146, 246, 0.28);
+      }
+
+      .wrap {
+        max-width: 1180px;
+        margin: 0 auto;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        letter-spacing: 0;
+      }
+
+      h1 {
+        font-size: clamp(1.8rem, 4vw, 3rem);
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        color: #635a7b;
+      }
+
+      main {
+        max-width: 1180px;
+        margin: 0 auto;
+        padding: 22px 20px 48px;
+        display: grid;
+        grid-template-columns: 320px minmax(0, 1fr);
+        gap: 18px;
+      }
+
+      aside,
+      .panel {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        box-shadow: var(--shadow);
+      }
+
+      aside {
+        align-self: start;
+        position: sticky;
+        top: 16px;
+        overflow: hidden;
+      }
+
+      .side-head {
+        padding: 16px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .side-head p {
+        margin: 4px 0 0;
+        color: var(--muted);
+        font-size: 0.92rem;
+      }
+
+      .question-list {
+        display: grid;
+        max-height: 58vh;
+        overflow: auto;
+      }
+
+      .practice-tools {
+        display: grid;
+        gap: 10px;
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        background: #fffefe;
+      }
+
+      .practice-search {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 9px 11px;
+        font: inherit;
+        color: var(--ink);
+        background: #fffbff;
+      }
+
+      .status-filters {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+      }
+
+      .status-filter {
+        padding: 7px 6px;
+        font-size: 0.86rem;
+      }
+
+      .status-filter.active {
+        background: #d8c7ff;
+        color: #342056;
+        border-color: #c7adff;
+      }
+
+      .course-tabs {
+        display: grid;
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+        background: #fffbff;
+      }
+
+      .course-tab {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 2px 8px;
+        align-items: baseline;
+        text-align: left;
+        padding: 10px 11px;
+      }
+
+      .course-tab strong {
+        font-weight: 700;
+        color: #6d48b3;
+      }
+
+      .course-tab span {
+        min-width: 0;
+        font-weight: 500;
+      }
+
+      .course-tab small {
+        grid-column: 2;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
+      .course-tab.active {
+        background: var(--primary);
+        color: var(--primary-ink);
+        border-color: var(--primary);
+      }
+
+      .course-tab.active strong,
+      .course-tab.active small {
+        color: var(--primary-ink);
+      }
+
+      .level-tabs {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 8px;
+        padding: 12px;
+        border-bottom: 1px solid var(--line);
+      }
+
+      .level-tab {
+        padding: 8px 6px;
+        font-size: 0.9rem;
+      }
+
+      .level-tab.active {
+        background: var(--primary);
+        color: var(--primary-ink);
+        border-color: var(--primary);
+      }
+
+      .question-tab {
+        appearance: none;
+        border: 0;
+        border-bottom: 1px solid var(--line);
+        background: transparent;
+        color: var(--ink);
+        text-align: left;
+        padding: 13px 16px;
+        cursor: pointer;
+        font: inherit;
+      }
+
+      .question-tab:hover,
+      .question-tab.active {
+        background: var(--soft);
+      }
+
+      .question-tab.done {
+        background: var(--soft-mint);
+        border-left: 4px solid var(--good);
+      }
+
+      .question-tab.done.active {
+        background: #dff7ea;
+      }
+
+      .question-tab strong {
+        display: block;
+        color: #4b376f;
+        font-weight: 600;
+      }
+
+      .question-tab span {
+        color: #5f6678;
+        font-size: 0.86rem;
+      }
+
+      .question-tab.active strong,
+      .question-tab.active span {
+        color: #32214f;
+      }
+
+      .done-badge {
+        display: inline-block;
+        margin-top: 5px;
+        border: 1px solid rgba(6, 118, 71, 0.28);
+        border-radius: 999px;
+        background: #f0fbf4;
+        color: var(--good);
+        padding: 2px 7px;
+        font-size: 0.78rem;
+      }
+
+      .question-empty,
+      .empty-state {
+        color: var(--muted);
+      }
+
+      .question-empty {
+        padding: 14px 16px;
+        border-bottom: 1px solid var(--line);
+        font-size: 0.92rem;
+      }
+
+      .empty-state {
+        min-height: 260px;
+        display: grid;
+        align-content: center;
+        gap: 8px;
+      }
+
+      .empty-state p {
+        margin: 0;
+      }
+
+      .panel {
+        padding: 22px;
+      }
+
+      .reader-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+        margin: 8px 0 14px;
+        padding: 10px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: #fdf8ff;
+      }
+
+      .reader-toolbar-group {
+        display: inline-flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        align-items: center;
+      }
+
+      .reader-toolbar-label {
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .reader-toolbar button {
+        min-width: 40px;
+        padding: 7px 10px;
+      }
+
+      .reading-surface {
+        font-size: var(--practice-font-size);
+      }
+
+      .reading-surface .scenario,
+      .reading-surface .question-text,
+      .reading-surface label.choice,
+      .reading-surface .match-row,
+      .reading-surface .drag-item,
+      .reading-surface .drop-zone,
+      .reading-surface textarea,
+      .reading-surface .answer-box {
+        font-size: inherit;
+      }
+
+      .meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .pill {
+        border: 1px solid var(--line);
+        background: #fffbff;
+        color: var(--muted);
+        border-radius: 999px;
+        padding: 4px 9px;
+        font-size: 0.84rem;
+      }
+
+      .statute-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .statute-row {
+        display: grid;
+        gap: 7px;
+        margin: 0 0 14px;
+        padding: 12px;
+        border: 1px solid rgba(182, 146, 246, 0.3);
+        border-radius: 8px;
+        background: #f7f0ff;
+      }
+
+      .statute-row-label {
+        color: #6d48b3;
+        font-size: 0.82rem;
+        font-weight: 600;
+        text-transform: uppercase;
+      }
+
+      .statute-button {
+        border-color: rgba(182, 146, 246, 0.52);
+        background: var(--soft);
+        color: #4b376f;
+        font-weight: 500;
+        padding: 5px 10px;
+      }
+
+      .statute-button:hover,
+      .statute-button.active {
+        background: var(--primary);
+        color: var(--primary-ink);
+        border-color: var(--primary);
+      }
+
+      .scenario {
+        margin: 16px 0;
+        padding: 16px;
+        border-left: 4px solid var(--primary);
+        background: #fffbff;
+        border-radius: 8px;
+      }
+
+      .question-text {
+        font-weight: 500;
+        margin: 16px 0;
+      }
+
+      .choices,
+      .matching,
+      .drag-grid {
+        display: grid;
+        gap: 10px;
+        margin: 12px 0;
+      }
+
+      label.choice,
+      .match-row,
+      .drag-item,
+      .drop-zone {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 12px;
+        background: #fbfcfc;
+      }
+
+      label.choice {
+        display: flex;
+        gap: 10px;
+        cursor: pointer;
+      }
+
+      select,
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 10px 12px;
+        font: inherit;
+        color: var(--ink);
+        background: var(--surface);
+      }
+
+      textarea {
+        min-height: 160px;
+        resize: vertical;
+      }
+
+      .match-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 190px;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .drag-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .drop-zone {
+        min-height: 90px;
+      }
+
+      .drop-zone h3 {
+        font-size: 0.95rem;
+        margin-bottom: 8px;
+      }
+
+      .drag-item {
+        cursor: grab;
+      }
+
+      .drag-item.used {
+        opacity: 0.45;
+      }
+
+      .controls {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 18px;
+      }
+
+      button {
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        background: var(--surface);
+        color: var(--ink);
+        font: inherit;
+        padding: 9px 13px;
+        cursor: pointer;
+      }
+
+      button.primary {
+        background: var(--primary);
+        color: var(--primary-ink);
+        border-color: var(--primary);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .hint-box,
+      .result,
+      .answer-box,
+      .statute-box {
+        margin-top: 16px;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        background: #fbfcfc;
+      }
+
+      .result.good {
+        border-color: rgba(6, 118, 71, 0.35);
+        background: #effaf5;
+      }
+
+      .result.bad {
+        border-color: rgba(180, 35, 24, 0.35);
+        background: #fff3f1;
+      }
+
+      .score {
+        font-size: 1.4rem;
+        font-weight: 500;
+      }
+
+      .feedback-list {
+        margin: 10px 0 0;
+        padding-left: 20px;
+      }
+
+      .small {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      details {
+        margin-top: 10px;
+        border-top: 1px solid var(--line);
+        padding-top: 10px;
+      }
+
+      summary {
+        cursor: pointer;
+        font-weight: 500;
+      }
+
+      .answer-box {
+        background: #fffbff;
+        border-color: rgba(182, 146, 246, 0.42);
+      }
+
+      .answer-box h3,
+      .statute-box h3 {
+        font-size: 1rem;
+        margin-bottom: 8px;
+      }
+
+      .answer-source {
+        display: inline-flex;
+        align-items: center;
+        border: 1px solid rgba(138, 75, 18, 0.24);
+        background: #fff4dd;
+        color: var(--warn);
+        border-radius: 999px;
+        padding: 3px 9px;
+        font-size: 0.86rem;
+        margin: 4px 0 12px;
+      }
+
+      .model-paragraph {
+        background: #ffffff;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 14px;
+        margin: 8px 0 12px;
+      }
+
+      .model-paragraph p {
+        margin: 0 0 0.9rem;
+      }
+
+      .model-paragraph p:last-child {
+        margin-bottom: 0;
+      }
+
+      .model-paragraph mark {
+        background: #efe6ff;
+        color: #5a3d91;
+        border-radius: 4px;
+        padding: 0 4px;
+      }
+
+      .user-highlight {
+        background: var(--highlight);
+        border-radius: 4px;
+        box-shadow: 0 0 0 2px rgba(255, 240, 168, 0.5);
+        padding: 0 2px;
+      }
+
+      .key-points {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0;
+      }
+
+      .key-point {
+        border-radius: 999px;
+        padding: 4px 9px;
+        font-size: 0.86rem;
+        border: 1px solid transparent;
+      }
+
+      .key-point.issue {
+        background: #eef4ff;
+        border-color: #c7d7fe;
+        color: #1d4ed8;
+      }
+
+      .key-point.rule {
+        background: #ecfdf3;
+        border-color: #abefc6;
+        color: #067647;
+      }
+
+      .key-point.fact {
+        background: #fff4dd;
+        border-color: #fedf89;
+        color: #8a4b12;
+      }
+
+      .key-point.conclusion {
+        background: #f4f3ff;
+        border-color: #d9d6fe;
+        color: #5925dc;
+      }
+
+      .inline-statute-note {
+        margin-top: 10px;
+        border: 1px solid rgba(182, 146, 246, 0.42);
+        border-radius: 8px;
+        background: var(--soft);
+        padding: 12px;
+      }
+
+      .statute-law-text {
+        display: grid;
+        gap: 8px;
+      }
+
+      .statute-law-text strong {
+        color: #6d48b3;
+      }
+
+      .statute-law-text blockquote {
+        margin: 0;
+        padding: 10px 12px;
+        border-left: 4px solid var(--primary);
+        background: #ffffff;
+        border-radius: 8px;
+      }
+
+      .statute-law-text blockquote p {
+        margin: 0 0 0.75rem;
+        line-height: 1.75;
+      }
+
+      .statute-law-text blockquote p:last-child {
+        margin-bottom: 0;
+      }
+
+      .statute-law-note {
+        color: var(--muted);
+        font-size: 0.9rem;
+      }
+
+      .answer-box ol {
+        margin: 8px 0 0;
+        padding-left: 22px;
+      }
+
+      @media (max-width: 860px) {
+        main {
+          display: block;
+          padding: 16px 14px 36px;
+        }
+
+        aside {
+          position: static;
+          margin-bottom: 16px;
+        }
+
+        .match-row,
+        .drag-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .panel {
+          padding: 16px;
+        }
+
+        .reader-toolbar {
+          align-items: stretch;
+        }
+
+        .reader-toolbar-group,
+        .reader-toolbar button {
+          flex: 1 1 auto;
+        }
+      }
+
+      @media (max-width: 520px) {
+        header {
+          padding: 22px 16px;
+        }
+
+        .level-tabs,
+        .status-filters {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="wrap">
+        <h1>LexiCore</h1>
+      </div>
+    </header>
+
+    <main>
+      <aside>
+        <div class="side-head">
+          <h2>คำถาม</h2>
+          <p id="summary"></p>
+        </div>
+        <div class="course-tabs" id="courseTabs"></div>
+        <div class="level-tabs" id="levelTabs"></div>
+        <div class="practice-tools">
+          <input class="practice-search" id="questionSearch" type="search" placeholder="ค้นหาคำถาม มาตรา หรือหมวด" />
+          <div class="status-filters" id="statusFilters">
+            <button class="status-filter active" data-status-filter="all" type="button">ทั้งหมด</button>
+            <button class="status-filter" data-status-filter="todo" type="button">ยังไม่ได้ทำ</button>
+            <button class="status-filter" data-status-filter="done" type="button">ทำแล้ว</button>
+          </div>
+        </div>
+        <div class="question-list" id="questionList"></div>
+      </aside>
+
+      <section class="panel" id="practicePanel"></section>
+    </main>
+
+    <script src="trial-writing-question-table.js"></script>
+    <script>
+      const statuteNotes = {
+        "395": {
+          title: "จัดการงานนอกสั่ง",
+          text: "บุคคลใดเข้าทำกิจการแทนผู้อื่นโดยเขามิได้ว่าขานวานใช้ให้ทำก็ดี หรือโดยมิได้มีสิทธิที่จะทำการงานนั้นแทนผู้อื่นด้วยประการใด ๆ ก็ดี ท่านว่าบุคคลนั้นจะต้องจัดการงานไปในทางที่จะให้สมประโยชน์แก่ตัวการ ตามความประสงค์อันแท้จริงของตัวการ หรือตามที่จะพึงสันนิษฐานได้ว่าเป็นความประสงค์ของตัวการ",
+          note: "ใช้ดูว่าเป็นการเข้าจัดการกิจการของผู้อื่นโดยไม่มีมอบหมายหรือสิทธิเดิมหรือไม่"
+        },
+        "401": {
+          title: "สิทธิเรียกค่าใช้จ่ายของผู้จัดการงานนอกสั่ง",
+          text: "มาตรานี้ใช้พิจารณาผลเรื่องค่าใช้จ่ายและภาระที่ผู้จัดการงานนอกสั่งออกไปเพื่อกิจการ เมื่อการจัดการเป็นไปโดยสมประโยชน์แก่ตัวการ",
+          note: "ในตัวทดลองยังเก็บเป็นสรุปใช้งาน ควรเติมตัวบทเต็มจากแหล่งกฎหมายทางการก่อนใช้จริง"
+        },
+        "406": {
+          title: "ลาภมิควรได้",
+          text: "บุคคลใดได้มาซึ่งทรัพย์สิ่งใด เพราะการที่บุคคลอีกคนหนึ่งกระทำเพื่อชำระหนี้ก็ดี หรือได้มาด้วยประการอื่นก็ดี โดยปราศจากมูลอันจะอ้างกฎหมายได้ และเป็นทางให้บุคคลอีกคนหนึ่งนั้นเสียเปรียบไซร้ ท่านว่าบุคคลนั้นจำต้องคืนทรัพย์ให้แก่เขา",
+          note: "จุดสำคัญคือ ได้ประโยชน์ + อีกฝ่ายเสียเปรียบ + ไม่มีมูลกฎหมาย"
+        },
+        "420": {
+          title: "ละเมิดทั่วไป",
+          text: "ผู้ใดจงใจหรือประมาทเลินเล่อ ทำต่อบุคคลอื่นโดยผิดกฎหมาย ให้เขาเสียหายถึงแก่ชีวิตก็ดี แก่ร่างกายก็ดี อนามัยก็ดี เสรีภาพก็ดี ทรัพย์สินหรือสิทธิอย่างหนึ่งอย่างใดก็ดี ท่านว่าผู้นั้นทำละเมิด จำต้องใช้ค่าสินไหมทดแทนเพื่อการนั้น",
+          note: "ใช้เป็นฐานหลักของละเมิด: การกระทำ ความผิดกฎหมาย ความเสียหาย และเหตุสัมพันธ์"
+        },
+        "425": {
+          title: "นายจ้างรับผิดในละเมิดของลูกจ้าง",
+          text: "นายจ้างต้องร่วมกันรับผิดกับลูกจ้างในผลแห่งละเมิด ซึ่งลูกจ้างได้กระทำไปในทางการที่จ้างนั้น",
+          note: "คำสำคัญคือ ต้องเป็นลูกจ้าง และละเมิดต้องเกิดในทางการที่จ้าง"
+        },
+        "433": {
+          title: "ความเสียหายอันเกิดจากสัตว์",
+          text: "ถ้าความเสียหายเกิดขึ้นเพราะสัตว์ ท่านว่าเจ้าของสัตว์หรือบุคคลผู้รับเลี้ยงรับรักษาไว้แทนเจ้าของ จำต้องใช้ค่าสินไหมทดแทนให้แก่ฝ่ายที่ต้องเสียหาย เว้นแต่จะพิสูจน์ได้ว่าได้ใช้ความระมัดระวังอันสมควรแก่การเลี้ยงรักษาตามชนิดและวิสัยของสัตว์ หรือตามพฤติการณ์อย่างอื่น หรือพิสูจน์ได้ว่าความเสียหายนั้นย่อมจะต้องเกิดมีขึ้นทั้งที่ได้ใช้ความระมัดระวังถึงเพียงนั้น",
+          note: "เน้นเจ้าของหรือผู้รับเลี้ยงรับรักษา และเหตุยกเว้นเรื่องความระมัดระวัง"
+        },
+        "437": {
+          title: "ยานพาหนะและทรัพย์อันตราย",
+          text: "บุคคลใดครอบครองหรือควบคุมดูแลยานพาหนะอย่างใด ๆ อันเดินด้วยกำลังเครื่องจักรกล บุคคลนั้นจะต้องรับผิดชอบเพื่อการเสียหายอันเกิดแต่ยานพาหนะนั้น เว้นแต่จะพิสูจน์ได้ว่าการเสียหายนั้นเกิดแต่เหตุสุดวิสัย หรือเกิดเพราะความผิดของผู้ต้องเสียหายนั้นเอง ความข้อนี้ให้ใช้บังคับได้ตลอดถึงบุคคลผู้มีไว้ในครอบครองของตน ซึ่งทรัพย์อันเป็นของเกิดอันตรายได้โดยสภาพ หรือโดยความมุ่งหมายที่จะใช้ หรือโดยอาการกลไกของทรัพย์นั้นด้วย",
+          note: "ดูว่าใครครอบครองหรือควบคุมดูแล ไม่ใช่ดูเฉพาะผู้ขับเสมอไป"
+        },
+        "1299": {
+          title: "การได้มาซึ่งทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์",
+          text: "ภายในบังคับแห่งบทบัญญัติในประมวลกฎหมายนี้หรือกฎหมายอื่น ท่านว่าการได้มาโดยนิติกรรมซึ่งอสังหาริมทรัพย์หรือทรัพยสิทธิอันเกี่ยวกับอสังหาริมทรัพย์นั้นไม่บริบูรณ์ เว้นแต่นิติกรรมจะได้ทำเป็นหนังสือและได้จดทะเบียนการได้มากับพนักงานเจ้าหน้าที่ ถ้ามีผู้ได้มาซึ่งอสังหาริมทรัพย์หรือทรัพยสิทธิอันเกี่ยวกับอสังหาริมทรัพย์โดยทางอื่นนอกจากนิติกรรม สิทธิของผู้ได้มานั้น ถ้ายังมิได้จดทะเบียนไซร้ ท่านว่าจะมีการเปลี่ยนแปลงทางทะเบียนไม่ได้ และสิทธิอันยังมิได้จดทะเบียนนั้น มิให้ยกขึ้นเป็นข้อต่อสู้บุคคลภายนอกผู้ได้สิทธิมาโดยเสียค่าตอบแทนและโดยสุจริต และได้จดทะเบียนสิทธิโดยสุจริตแล้ว",
+          note: "แกนข้อสอบคือแยกผลระหว่างคู่กรณี กับผลต่อบุคคลภายนอกที่สุจริตและจดทะเบียนแล้ว"
+        },
+        "1336": {
+          title: "อำนาจเจ้าของกรรมสิทธิ์",
+          text: "ภายในบังคับแห่งกฎหมาย เจ้าของทรัพย์สินมีสิทธิใช้สอยและจำหน่ายทรัพย์สินของตน และได้ซึ่งดอกผลแห่งทรัพย์สินนั้น กับทั้งมีสิทธิติดตามและเอาคืนซึ่งทรัพย์สินของตนจากบุคคลผู้ไม่มีสิทธิจะยึดถือไว้ และมีสิทธิขัดขวางมิให้ผู้อื่นสอดเข้าเกี่ยวข้องกับทรัพย์สินนั้นโดยมิชอบด้วยกฎหมาย",
+          note: "จำเป็นต้องเห็นทั้งอำนาจใช้สอย จำหน่าย ได้ดอกผล ติดตามเอาคืน และขัดขวาง"
+        },
+        "1374": {
+          title: "สิทธิปลดเปลื้องการรบกวนการครอบครอง",
+          text: "ถ้าผู้ครอบครองถูกรบกวนในการครอบครองทรัพย์สิน เพราะมีผู้สอดเข้าเกี่ยวข้องโดยมิชอบด้วยกฎหมายไซร้ ท่านว่าผู้ครอบครองมีสิทธิจะให้ปลดเปลื้องการรบกวนนั้นได้ ถ้าเป็นที่น่าวิตกว่าจะยังมีการรบกวนอีก ผู้ครอบครองจะร้องต่อศาลให้สั่งห้ามก็ได้",
+          note: "ใช้เมื่อผู้ครอบครองยังไม่ถูกแย่งการครอบครองทั้งหมด แต่ถูกรบกวนโดยมิชอบ"
+        },
+        "1375": {
+          title: "สิทธิเอาคืนการครอบครอง",
+          text: "ถ้าผู้ครอบครองถูกแย่งการครอบครองโดยมิชอบด้วยกฎหมายไซร้ ท่านว่าผู้ครอบครองมีสิทธิจะได้คืนซึ่งการครอบครอง เว้นแต่อีกฝ่ายหนึ่งมีสิทธิเหนือทรัพย์สินดีกว่า ซึ่งจะเป็นเหตุให้เรียกคืนจากผู้ครอบครองได้ การฟ้องคดีเพื่อเอาคืนซึ่งการครอบครองนั้น ท่านว่าต้องฟ้องภายในปีหนึ่งนับแต่เวลาถูกแย่งการครอบครอง",
+          note: "จุดสำคัญคือกำหนดเวลาหนึ่งปีหลังถูกแย่งการครอบครอง"
+        },
+        "1382": {
+          title: "ครอบครองปรปักษ์",
+          text: "บุคคลใดครอบครองทรัพย์สินของผู้อื่นไว้โดยความสงบและโดยเปิดเผย ด้วยเจตนาเป็นเจ้าของ ถ้าเป็นอสังหาริมทรัพย์ได้ครอบครองติดต่อกันเป็นเวลาสิบปี ถ้าเป็นสังหาริมทรัพย์ได้ครอบครองติดต่อกันเป็นเวลาห้าปีไซร้ ท่านว่าบุคคลนั้นได้กรรมสิทธิ์",
+          note: "อย่าดูแค่ระยะเวลา ต้องมีสงบ เปิดเผย และเจตนาเป็นเจ้าของ"
+        },
+        "1385": {
+          title: "นับเวลาครอบครองของผู้โอนรวมได้",
+          text: "ถ้าโอนการครอบครองแก่กัน ผู้รับโอนจะนับเวลาซึ่งผู้โอนได้ครอบครองอยู่ก่อนนั้น รวมเข้ากับเวลาครอบครองของตนก็ได้",
+          note: "ใช้คู่กับมาตรา 1382 เมื่อโจทย์มีผู้ครอบครองเดิมโอนการครอบครองต่อให้ผู้อื่น"
+        },
+        "1402": {
+          title: "สิทธิอาศัย",
+          text: "บุคคลใดได้รับสิทธิอาศัยในโรงเรือน บุคคลนั้นย่อมมีสิทธิอยู่ในโรงเรือนนั้นโดยไม่ต้องเสียค่าเช่า",
+          note: "ในการตอบต้องโยงกับมาตรา 1299 เมื่อเป็นสิทธิเกี่ยวกับอสังหาริมทรัพย์ที่ยังไม่จดทะเบียน"
+        },
+        "1410": {
+          title: "สิทธิเหนือพื้นดิน",
+          text: "เจ้าของที่ดินอาจก่อให้เกิดสิทธิเหนือพื้นดินเป็นคุณแก่บุคคลอื่น โดยให้บุคคลนั้นมีสิทธิเป็นเจ้าของโรงเรือน สิ่งปลูกสร้าง หรือสิ่งเพาะปลูก บนดินหรือใต้ดินนั้น",
+          note: "ใช้แยกจากสัญญาเช่า และต้องพิจารณาการจดทะเบียนเมื่อจะอ้างเป็นทรัพยสิทธิต่อบุคคลภายนอก"
+        },
+        "1417": {
+          title: "สิทธิเก็บกิน",
+          text: "อสังหาริมทรัพย์อาจต้องตกอยู่ในบังคับสิทธิเก็บกิน อันเป็นเหตุให้ผู้ทรงสิทธินั้นมีสิทธิครอบครอง ใช้ และถือเอาประโยชน์แห่งทรัพย์สินนั้น",
+          note: "แยกสิทธิใช้ประโยชน์ออกจากกรรมสิทธิ์ของเจ้าของทรัพย์"
+        }
+      };
+
+      const generatedStatuteNotesByCourse = {
+        "41215": Object.fromEntries((window.LEXICORE_STATUTES_41215 || []).map(entry => [
+          entry.section,
+          {
+            title: entry.shortTitle,
+            text: entry.content,
+            note: "ตัวบทเต็มจากไฟล์มาตราแพ่งของวิชา 41215"
+          }
+        ])),
+        "41216": Object.fromEntries((window.LEXICORE_STATUTES_41216 || []).map(entry => [
+          entry.section,
+          {
+            title: entry.shortTitle,
+            text: entry.content,
+            note: "ตัวบทเต็มจากไฟล์มาตราทางอาญาของวิชา 41216"
+          }
+        ]))
+      };
+
+      function statuteEntry(statute, courseId) {
+        const courseEntries = generatedStatuteNotesByCourse[courseId] || {};
+        const key = statuteKey(statute);
+        return courseEntries[key] || statuteNotes[key];
+      }
+
+      function statuteKey(statute) {
+        return String(statute || "").match(/\d{1,4}/)?.[0] || String(statute || "").trim();
+      }
+
+      function statuteButtonText(statute) {
+        return String(statute || "").replace(/^มาตรา\s*/u, "").trim();
+      }
+
+      function thaiNumberToInt(value) {
+        return {
+          "แรก": 1,
+          "หนึ่ง": 1,
+          "1": 1,
+          "สอง": 2,
+          "2": 2,
+          "สาม": 3,
+          "3": 3,
+          "สี่": 4,
+          "4": 4,
+          "ห้า": 5,
+          "5": 5,
+          "หก": 6,
+          "6": 6,
+          "เจ็ด": 7,
+          "7": 7,
+          "แปด": 8,
+          "8": 8,
+          "เก้า": 9,
+          "9": 9,
+          "สิบ": 10,
+          "10": 10
+        }[String(value || "").trim()] || null;
+      }
+
+      function statuteParagraphIndex(statute) {
+        return thaiNumberToInt(String(statute || "").match(/วรรค\s*([^\s()]+)/u)?.[1]);
+      }
+
+      function statuteItemIndex(statute) {
+        return Number(String(statute || "").match(/\((\d{1,2})\)/)?.[1]) || null;
+      }
+
+      function splitStatuteParagraphs(content) {
+        return String(content || "")
+          .replace(/\s+(กระทำโดยเจตนา ได้แก่)/gu, "\n$1")
+          .replace(/\s+(ถ้าผู้กระทำมิได้รู้ข้อเท็จจริง)/gu, "\n$1")
+          .replace(/\s+(กระทำโดยประมาท ได้แก่)/gu, "\n$1")
+          .replace(/\s+(การกระทำ ให้หมายความรวมถึง)/gu, "\n$1")
+          .replace(/\s+(ถ้าตามกฎหมายที่บัญญัติในภายหลัง)/gu, "\n$1")
+          .replace(/\s+(แต่ในกรณีที่คดีถึงที่สุดแล้ว)/gu, "\n$1")
+          .replace(/\s+(ผู้ใดพยายามกระทำความผิด)/gu, "\n$1")
+          .replace(/\s+(ถ้าการกระทำความผิดดังกล่าว)/gu, "\n$1")
+          .split(/\n+/)
+          .map(paragraph => paragraph.trim())
+          .filter(Boolean);
+      }
+
+      function statuteItemExcerpt(content, item) {
+        if (!item) return "";
+        const match = String(content || "").match(new RegExp(`\\(${item}\\)\\s*([\\s\\S]*?)(?=\\s*\\(${item + 1}\\)\\s|$)`));
+        return match?.[0]?.trim() || "";
+      }
+
+      function statuteContentForDisplay(entry, statute) {
+        const item = statuteItemExcerpt(entry.text, statuteItemIndex(statute));
+        if (item) return [item];
+
+        const paragraphs = splitStatuteParagraphs(entry.text);
+        const paragraphIndex = statuteParagraphIndex(statute);
+        if (paragraphIndex && paragraphs[paragraphIndex - 1]) {
+          return [paragraphs[paragraphIndex - 1]];
+        }
+        return paragraphs;
+      }
+
+      function cleanAnswerStep(step) {
+        return String(step || "").replace(/^\s*(?:\d+|[๐-๙]+)[.)]\s*/, "").trim();
+      }
+
+      const DEFAULT_COURSE_ID = "41215";
+      const courseCatalog = [
+        {
+          id: "41215",
+          code: "41215",
+          title: "ละเมิดและทรัพย์สิน",
+          note: "กฎหมายแพ่ง",
+          questionGlobal: "LEXICORE_WRITING_QUESTIONS_41215",
+          levelOneGlobal: "LEXICORE_LEVEL1_QUESTIONS_41215"
+        },
+        {
+          id: "41216",
+          code: "41216",
+          title: "กฎหมายอาญา",
+          note: "ข้อเขียนกฎหมายอาญา",
+          questionGlobal: "LEXICORE_WRITING_QUESTIONS_41216",
+          levelOneGlobal: "LEXICORE_LEVEL1_QUESTIONS_41216"
+        }
+      ];
+
+      const questions = [
+        {
+          id: "q-395-management-without-mandate-elements",
+          title: "องค์ประกอบจัดการงานนอกสั่ง",
+          type: "mcq",
+          level: 1,
+          module: "ละเมิด / จัดการงานนอกสั่ง",
+          source: "หน่วย 5",
+          statutes: ["395"],
+          scenario: "เลือกข้อความที่อธิบายลักษณะของจัดการงานนอกสั่งได้ถูกต้องที่สุด",
+          question: "ข้อใดเป็นจุดเริ่มต้นที่ถูกต้องในการพิจารณาจัดการงานนอกสั่ง",
+          choices: [
+            { id: "a", text: "ผู้จัดการทำกิจการแทนผู้อื่นโดยมีสัญญาจ้างหรือสัญญาตัวแทนอยู่ก่อน", correct: false, rationale: "จัดการงานนอกสั่งต้องแยกจากกรณีมีสัญญาหรือหน้าที่เดิม" },
+            { id: "b", text: "ผู้จัดการเข้าทำกิจการแทนผู้อื่นโดยไม่ได้รับมอบหมายและต้องพิจารณาว่าสมประโยชน์ของตัวการหรือไม่", correct: true, rationale: "ตรงกับแกนของมาตรา 395" },
+            { id: "c", text: "ผู้จัดการทำสิ่งใดก็ตามที่ทำให้ตนเองได้ประโยชน์เป็นหลัก", correct: false, rationale: "ต้องเป็นกิจการของผู้อื่น ไม่ใช่ประโยชน์ของผู้จัดการเองโดยแท้" }
+          ],
+          hints: [
+            "โจทย์นี้ถามเรื่องจัดการงานนอกสั่ง",
+            "มองหาการเข้าทำกิจการแทนผู้อื่นโดยไม่ได้รับมอบหมาย",
+            "พิจารณามาตรา 395"
+          ]
+        },
+        {
+          id: "q-420-drag-elements-to-facts",
+          title: "จับคู่องค์ประกอบมาตรา 420",
+          type: "drag_drop",
+          level: 1,
+          module: "ละเมิด",
+          source: "หน่วย 1",
+          statutes: ["420"],
+          scenario: "นาย ก. ยกแจกันโดยไม่ระวัง แจกันตกใส่นาย ข. จนบาดเจ็บ",
+          question: "ลากข้อเท็จจริงไปจับคู่กับองค์ประกอบที่ถูกต้อง",
+          dragItems: [
+            { id: "fact-1", text: "ยกแจกันโดยไม่ระวัง" },
+            { id: "fact-2", text: "นาย ข. ได้รับบาดเจ็บ" }
+          ],
+          dropZones: [
+            { id: "element-negligence", label: "ประมาทเลินเล่อ" },
+            { id: "element-damage", label: "ความเสียหาย" }
+          ],
+          mapping: { "fact-1": "element-negligence", "fact-2": "element-damage" },
+          hints: [
+            "โจทย์นี้ให้จับคู่ข้อเท็จจริงกับองค์ประกอบละเมิด",
+            "แยกพฤติกรรมของผู้กระทำออกจากผลเสียหาย",
+            "พิจารณามาตรา 420"
+          ]
+        },
+        {
+          id: "q-8-real-vs-personal-rights",
+          title: "แยกทรัพยสิทธิกับบุคคลสิทธิ",
+          type: "matching",
+          level: 1,
+          module: "ทรัพย์สิน",
+          source: "หน่วย 8",
+          statutes: ["1299"],
+          scenario: "จับคู่ข้อความกับประเภทสิทธิที่เหมาะสม",
+          question: "ข้อความใดเป็นทรัพยสิทธิหรือบุคคลสิทธิ",
+          pairs: [
+            { prompt: "สิทธิเหนือทรัพย์ที่อาจใช้ยันบุคคลทั่วไปได้เมื่อก่อตั้งถูกต้อง", answer: "ทรัพยสิทธิ" },
+            { prompt: "สิทธิเรียกร้องให้คู่สัญญาชำระหนี้หรือปฏิบัติตามสัญญา", answer: "บุคคลสิทธิ" },
+            { prompt: "สิทธิอาศัยหรือภาระจำยอมที่เป็นสิทธิเกี่ยวกับอสังหาริมทรัพย์", answer: "ทรัพยสิทธิ" },
+            { prompt: "สิทธิของผู้เช่าที่เรียกร้องต่อผู้ให้เช่าตามสัญญาเช่า", answer: "บุคคลสิทธิ" }
+          ],
+          options: ["ทรัพยสิทธิ", "บุคคลสิทธิ"],
+          hints: [
+            "โจทย์นี้ฝึกแยกประเภทสิทธิตามวัตถุแห่งสิทธิ",
+            "ทรัพยสิทธิมุ่งสิทธิเหนือทรัพย์ ส่วนบุคคลสิทธิมุ่งสิทธิเรียกร้องต่อบุคคล",
+            "เชื่อมกับหลักทรัพยสิทธิและผลของมาตรา 1299 เมื่อต้องจดทะเบียน"
+          ]
+        },
+        {
+          id: "q-406-mistaken-payment",
+          title: "โอนเงินผิดบัญชี",
+          type: "subjective",
+          level: 2,
+          module: "ลาภมิควรได้",
+          source: "หน่วย 5",
+          statutes: ["406"],
+          scenario: "นาย ก. ตั้งใจโอนเงินชำระหนี้ให้นาย ข. แต่กรอกเลขบัญชีผิดทำให้เงินเข้าบัญชีนาย ค. นาย ค. ทราบว่าเงินไม่ได้เป็นของตน แต่ยังนำเงินไปใช้",
+          question: "ให้นักเรียนวินิจฉัยว่านาย ก. มีสิทธิเรียกคืนเงินจากนาย ค. บนฐานลาภมิควรได้หรือไม่",
+          criteria: [
+            { id: "enrichment", label: "วิเคราะห์การได้ประโยชน์ของนาย ค.", points: 2, keywords: ["ได้ประโยชน์", "เงินเข้าบัญชี", "นาย ค"] },
+            { id: "impoverishment", label: "วิเคราะห์ความเสียเปรียบของนาย ก.", points: 2, keywords: ["นาย ก", "เสีย", "โอนผิด"] },
+            { id: "no_legal_ground", label: "วิเคราะห์การไม่มีมูลอันจะอ้างกฎหมายได้", points: 4, keywords: ["ไม่มีมูล", "มูลกฎหมาย", "ลาภมิควรได้", "406"] },
+            { id: "conclusion", label: "สรุปสิทธิเรียกคืน", points: 2, keywords: ["เรียกคืน", "ต้องคืน", "มีสิทธิ"] }
+          ],
+          hints: [
+            "โจทย์นี้เกี่ยวกับลาภมิควรได้ ไม่ใช่ละเมิดเป็นหลัก",
+            "มองหาการได้ประโยชน์ของนาย ค. การเสียเปรียบของนาย ก. และการไม่มีมูลกฎหมาย",
+            "พิจารณามาตรา 406"
+          ],
+          modelAnswer: {
+            source: "แนวฝึกจากหน่วยเก็ง มสธ. 41215 หน่วย 5",
+            paragraph: "ประเด็นของข้อนี้คือ นาย ค. ได้รับเงินโดยไม่มีมูลอันจะอ้างกฎหมายได้หรือไม่ ตามหลัก <mark>ลาภมิควรได้ มาตรา 406</mark> ต้องพิจารณาว่าฝ่ายหนึ่งได้ประโยชน์ อีกฝ่ายเสียเปรียบ และไม่มีมูลทางกฎหมายรองรับ เมื่อนาย ก. โอนเงินผิดเข้าบัญชีนาย ค. นาย ค. จึงได้รับประโยชน์จากเงินของนาย ก. โดยไม่มีหนี้หรือมูลกฎหมายให้ถือเงินไว้ได้ ดังนั้นนาย ก. <mark>มีสิทธิเรียกคืนเงิน</mark> จากนาย ค.",
+            highlights: [
+              { type: "issue", text: "ประเด็น: ได้ลาภโดยไม่มีมูลหรือไม่" },
+              { type: "rule", text: "Rule: ม.406 ลาภมิควรได้" },
+              { type: "fact", text: "Fact: โอนผิดบัญชี นาย ค. รู้ว่าไม่ใช่เงินตน" },
+              { type: "conclusion", text: "Conclusion: นาย ก. เรียกคืนได้" }
+            ],
+            steps: [
+              "ประเด็นคือ นาย ค. ได้รับเงินโดยไม่มีมูลอันจะอ้างกฎหมายได้หรือไม่",
+              "หลักกฎหมาย ลาภมิควรได้พิจารณาการได้ประโยชน์ของฝ่ายหนึ่ง ความเสียเปรียบของอีกฝ่าย และการไม่มีมูลกฎหมายรองรับ",
+              "ปรับบท นาย ค. ได้เงินเข้าบัญชีจากการโอนผิดของนาย ก. ไม่มีหนี้หรือมูลกฎหมายที่ทำให้นาย ค. ถือเงินไว้ได้",
+              "สรุป นาย ก. มีสิทธิเรียกคืนเงินจากนาย ค. ตามหลักลาภมิควรได้"
+            ]
+          }
+        },
+        {
+          id: "exam-tort-employer-vehicle",
+          title: "แนวเก็ง: ลูกจ้างขับรถส่งของชนผู้เสียหาย",
+          type: "subjective",
+          level: 2,
+          module: "หน่วย 1-3 ละเมิด",
+          source: "ชุดเก็งอัตนัย 41215",
+          statutes: ["420", "425", "437"],
+          scenario: "บริษัทมอบหมายให้นาย ก. ลูกจ้าง ขับรถส่งสินค้า ระหว่างทางนาย ก. ขับรถโดยประมาทชนรถนาย ข. เสียหาย นาย ข. ต้องการเรียกค่าเสียหายจากนาย ก. และบริษัท",
+          question: "ให้นักเรียนวินิจฉัยความรับผิดของนาย ก. และบริษัท โดยแยกฐานละเมิดของผู้ขับ ความรับผิดนายจ้าง และประเด็นยานพาหนะ",
+          criteria: [
+            { id: "driver_tort", label: "วิเคราะห์ละเมิดของนาย ก. ตามมาตรา 420", points: 4, keywords: ["420", "ประมาท", "เสียหาย", "เหตุสัมพันธ์"] },
+            { id: "employer", label: "วิเคราะห์ความรับผิดนายจ้างตามมาตรา 425", points: 4, keywords: ["425", "นายจ้าง", "ลูกจ้าง", "ทางการที่จ้าง"] },
+            { id: "vehicle", label: "กล่าวถึงประเด็นยานพาหนะตามมาตรา 437", points: 3, keywords: ["437", "ยานพาหนะ", "ครอบครอง", "ควบคุมดูแล"] },
+            { id: "conclusion", label: "สรุปแยกผู้รับผิดชัดเจน", points: 2, keywords: ["สรุป", "รับผิด", "บริษัท"] }
+          ],
+          hints: [
+            "หน่วยเก็งชี้ว่าหน่วย 1-3 ออกบ่อย ให้แยกฐานละเมิดของคนขับ นายจ้าง และยานพาหนะ",
+            "มองหาคำว่า ประมาท ลูกจ้าง ทางการที่จ้าง และผู้ครอบครอง/ควบคุมดูแลรถ",
+            "มาตราที่ควรเปิดดู: 420, 425 และ 437"
+          ],
+          modelAnswer: {
+            source: "แนวตอบฝึกจากชุดเก็งอัตนัย หน่วย 1-3",
+            paragraph: "ประเด็นต้องแยกเป็นสามชั้น คือความรับผิดของนาย ก. บริษัท และฐานยานพาหนะ นาย ก. ขับรถโดยประมาทจนรถนาย ข. เสียหาย จึงเข้าองค์ประกอบ <mark>ละเมิดตามมาตรา 420</mark> หากพิสูจน์เหตุสัมพันธ์ได้ ต่อมาบริษัทเป็นนายจ้างและนาย ก. ขับรถส่งสินค้าตามงานที่มอบหมาย การกระทำจึงมีแนวโน้มเกิด <mark>ในทางการที่จ้างตามมาตรา 425</mark> บริษัทจึงอาจต้องร่วมรับผิด นอกจากนี้รถส่งสินค้าเป็นยานพาหนะอันเดินด้วยกำลังเครื่องจักรกล ควรพิจารณา <mark>มาตรา 437</mark> เรื่องผู้ครอบครองหรือควบคุมดูแลประกอบด้วย",
+            highlights: [
+              { type: "issue", text: "ประเด็น: ผู้ขับ นายจ้าง และยานพาหนะ" },
+              { type: "rule", text: "Rule: ม.420 + ม.425 + ม.437" },
+              { type: "fact", text: "Fact: ขับส่งสินค้าตามงานบริษัท" },
+              { type: "conclusion", text: "Conclusion: ลูกจ้างและนายจ้างอาจรับผิด" }
+            ],
+            steps: [
+              "นาย ก. ขับรถโดยประมาทจนรถนาย ข. เสียหาย จึงควรวิเคราะห์ละเมิดตามมาตรา 420 ได้แก่ การกระทำโดยประมาท ความเสียหาย และเหตุสัมพันธ์",
+              "บริษัทเป็นนายจ้าง หากนาย ก. ขับรถส่งสินค้าตามงานที่มอบหมาย การกระทำเกิดในทางการที่จ้าง จึงพิจารณาความรับผิดนายจ้างตามมาตรา 425",
+              "รถเป็นยานพาหนะอันเดินด้วยกำลังเครื่องจักรกล จึงควรกล่าวถึงมาตรา 437 เพื่อพิจารณาผู้ครอบครองหรือควบคุมดูแล",
+              "สรุป นาย ก. ต้องรับผิดฐานละเมิด และบริษัทมีแนวโน้มต้องร่วมรับผิดหากพิสูจน์ว่าเหตุเกิดในทางการที่จ้าง"
+            ]
+          }
+        },
+        {
+          id: "q-1402-habitation-registration",
+          title: "สิทธิอาศัยที่ยังไม่ได้จดทะเบียน",
+          type: "subjective",
+          level: 2,
+          module: "ทรัพยสิทธิอื่น",
+          source: "หน่วย 14",
+          statutes: ["1299", "1402"],
+          scenario: "นาย ก. ทำหนังสือให้นาย ข. มีสิทธิอยู่อาศัยในบ้านของตนตลอดชีวิต แต่ยังไม่ได้จดทะเบียนต่อพนักงานเจ้าหน้าที่ ต่อมานาย ก. ขายบ้านให้นาย ค. นาย ข. ต้องการอ้างสิทธิอาศัยต่อ นาย ค.",
+          question: "ให้นักเรียนวินิจฉัยผลของสิทธิอาศัยและประเด็นการจดทะเบียนต่อบุคคลภายนอก",
+          criteria: [
+            { id: "habitation", label: "ระบุสิทธิอาศัยตามมาตรา 1402", points: 2, keywords: ["สิทธิอาศัย", "1402", "อยู่อาศัย"] },
+            { id: "registration", label: "วิเคราะห์ผลของการจดทะเบียนตามมาตรา 1299", points: 4, keywords: ["จดทะเบียน", "1299", "ทรัพยสิทธิ"] },
+            { id: "third_party", label: "แยกผลต่อบุคคลภายนอก", points: 3, keywords: ["บุคคลภายนอก", "นาย ค", "อ้างต่อ"] },
+            { id: "conclusion", label: "สรุปผลถูกต้อง", points: 1, keywords: ["สรุป", "อ้าง", "ไม่ได้", "มีปัญหา"] }
+          ],
+          hints: [
+            "โจทย์นี้เกี่ยวกับสิทธิอาศัยซึ่งเป็นทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์",
+            "แยกผลระหว่างคู่กรณีกับผลต่อบุคคลภายนอกเมื่อยังไม่ได้จดทะเบียน",
+            "พิจารณามาตรา 1402 ประกอบมาตรา 1299"
+          ],
+          modelAnswer: {
+            source: "แนวฝึกจากหน่วยเก็ง มสธ. 41215 หน่วย 14",
+            paragraph: "ต้องเริ่มจากแยกว่า นาย ข. อ้างสิทธิอาศัยต่อใคร สิทธิอาศัยเป็นทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์ตาม <mark>มาตรา 1402</mark> และเมื่อเป็นการได้มาซึ่งทรัพยสิทธิในอสังหาริมทรัพย์ย่อมต้องดูผลของ <mark>การจดทะเบียนตามมาตรา 1299</mark> แม้นาย ก. กับนาย ข. มีหนังสือตกลงกัน แต่ยังไม่ได้จดทะเบียน เมื่อนาย ก. โอนบ้านให้นาย ค. นาย ข. จึงมีปัญหาในการอ้างสิทธิต่อบุคคลภายนอก อย่างไรก็ดี นาย ข. อาจยังมีสิทธิเรียกร้องต่อนาย ก. ตามนิติสัมพันธ์เดิม",
+            highlights: [
+              { type: "issue", text: "ประเด็น: สิทธิอาศัยอ้างต่อผู้รับโอนได้ไหม" },
+              { type: "rule", text: "Rule: ม.1402 + ม.1299" },
+              { type: "fact", text: "Fact: มีหนังสือแต่ยังไม่จดทะเบียน" },
+              { type: "conclusion", text: "Conclusion: อ้างต่อบุคคลภายนอกมีปัญหา" }
+            ],
+            steps: [
+              "ประเด็นคือ สิทธิอาศัยของนาย ข. มีผลเพียงใดเมื่อยังไม่ได้จดทะเบียน และอ้างต่อ นาย ค. ได้หรือไม่",
+              "สิทธิอาศัยเป็นทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์ จึงต้องพิจารณามาตรา 1402 และผลของการจดทะเบียนตามมาตรา 1299",
+              "แม้นาย ก. กับนาย ข. มีหนังสือตกลงกัน แต่เมื่อยังไม่ได้จดทะเบียน ต้องแยกผลระหว่างคู่กรณีกับผลต่อบุคคลภายนอกผู้รับโอน",
+              "สรุป นาย ข. มีปัญหาในการอ้างสิทธิอาศัยต่อ นาย ค. ในฐานะบุคคลภายนอก แต่อาจมีข้อเรียกร้องต่อนาย ก. ตามนิติสัมพันธ์เดิม"
+            ]
+          }
+        },
+        {
+          id: "q-exam-prep-possession-disturbance-public-land",
+          title: "แนวเก็ง: รบกวนการครอบครองในที่ดินสาธารณะ",
+          type: "subjective",
+          level: 2,
+          module: "สิทธิครอบครอง",
+          source: "ชุดเก็งอัตนัย หน้า 38-39",
+          statutes: ["1374", "1304"],
+          scenario: "ดินเข้าไปทำสวนในที่ดินซึ่งเป็นสาธารณสมบัติของแผ่นดิน ต่อมาแดน เจ้าของที่ดินมือเปล่าข้างเคียง ทำทางเดินผ่านสวนของดินโดยไม่ได้รับอนุญาต",
+          question: "ให้วินิจฉัยว่าดินซึ่งครอบครองทำประโยชน์อยู่ก่อน จะยกสิทธิเพื่อปลดเปลื้องการรบกวนต่อแดนได้หรือไม่",
+          criteria: [
+            { id: "possession_issue", label: "จับประเด็นการรบกวนการครอบครอง", points: 2, keywords: ["รบกวน", "ครอบครอง", "ปลดเปลื้อง"] },
+            { id: "rule_1374", label: "ระบุมาตรา 1374 และหลักผู้ครอบครองถูกรบกวน", points: 3, keywords: ["1374", "ผู้ครอบครอง", "รบกวน"] },
+            { id: "public_land_limit", label: "แยกผลต่อรัฐกับผลระหว่างเอกชน", points: 3, keywords: ["รัฐ", "ราษฎร", "สาธารณสมบัติ"] },
+            { id: "conclusion", label: "สรุปว่าดินยกข้อต่อสู้ต่อแดนได้หรือไม่", points: 2, keywords: ["ดิน", "แดน", "ยก", "ได้"] }
+          ],
+          hints: [
+            "โฟกัสสิทธิครอบครองและการถูกรบกวน",
+            "แยกผลของการครอบครองสาธารณสมบัติเมื่อเทียบกับรัฐ ออกจากผลระหว่างเอกชนด้วยกัน",
+            "พิจารณามาตรา 1374 และหลักสาธารณสมบัติของแผ่นดิน"
+          ],
+          modelAnswer: {
+            source: "แนวตอบเรียบเรียงจากไฟล์เก็ง หน้า 39",
+            paragraph: "ประเด็นคือ ดินในฐานะผู้ครอบครองทำประโยชน์อยู่ก่อนจะขอปลดเปลื้องการรบกวนจากแดนได้หรือไม่ ตาม <mark>มาตรา 1374</mark> ผู้ครอบครองที่ถูกรบกวนโดยผู้สอดเข้าเกี่ยวข้องโดยมิชอบมีสิทธิขอให้ปลดเปลื้องการรบกวนได้ แม้การครอบครองที่ดินสาธารณสมบัติของแผ่นดินจะใช้ยันรัฐไม่ได้ แต่ในความสัมพันธ์ระหว่างราษฎรด้วยกัน ดินซึ่งครอบครองทำประโยชน์อยู่ก่อนยังอาจยกการครอบครองขึ้นยันแดนผู้เข้ามารบกวนได้ ดังนั้นดิน <mark>มีทางขอให้ปลดเปลื้องการรบกวน</mark> ต่อแดน",
+            highlights: [
+              { type: "issue", text: "ประเด็น: รบกวนการครอบครอง" },
+              { type: "rule", text: "Rule: ม.1374" },
+              { type: "fact", text: "Fact: ที่ดินสาธารณะ แต่โต้แย้งกันระหว่างเอกชน" },
+              { type: "conclusion", text: "Conclusion: ดินยกข้อต่อสู้ต่อแดนได้" }
+            ],
+            steps: [
+              "ระบุว่าข้อเท็จจริงเป็นการรบกวนการครอบครอง ไม่ใช่การแย่งการครอบครองทั้งหมด",
+              "อธิบายมาตรา 1374 ว่าผู้ครอบครองมีสิทธิขอปลดเปลื้องการรบกวนได้",
+              "แยกผลต่อรัฐออกจากผลระหว่างราษฎรด้วยกัน",
+              "สรุปว่าดินยกการครอบครองขึ้นยันแดนเพื่อปลดเปลื้องการรบกวนได้"
+            ]
+          }
+        },
+        {
+          id: "q-exam-prep-recover-possession-one-year",
+          title: "แนวเก็ง: ฟ้องเอาคืนการครอบครองภายในหนึ่งปี",
+          type: "subjective",
+          level: 2,
+          module: "สิทธิครอบครอง",
+          source: "ชุดเก็งอัตนัย หน้า 43-44",
+          statutes: ["1375"],
+          scenario: "นาย ก. บุกรุกเข้าไปครอบครองที่ดินมือเปล่าของนาย ข. โดยรู้อยู่แล้วว่าเป็นของนาย ข. ผ่านไปกว่า 10 ปี นาย ข. เพิ่งทราบเรื่องและขับไล่นาย ก. ออกจากที่ดิน",
+          question: "ให้วินิจฉัยว่านาย ก. มีข้อต่อสู้เกี่ยวกับกำหนดเวลาฟ้องเอาคืนการครอบครองตามมาตรา 1375 หรือไม่",
+          criteria: [
+            { id: "dispossession", label: "ระบุการแย่งการครอบครอง", points: 2, keywords: ["แย่ง", "ครอบครอง", "มิชอบ"] },
+            { id: "one_year", label: "อธิบายกำหนดฟ้องภายในหนึ่งปี", points: 4, keywords: ["หนึ่งปี", "1375", "ฟ้อง"] },
+            { id: "facts", label: "ปรับข้อเท็จจริงเรื่องเวลาผ่านกว่า 10 ปี", points: 2, keywords: ["10 ปี", "พ้น", "กำหนด"] },
+            { id: "conclusion", label: "สรุปข้อต่อสู้ของนาย ก.", points: 2, keywords: ["ข้อต่อสู้", "นาย ก", "ได้"] }
+          ],
+          hints: [
+            "โฟกัสการถูกแย่งการครอบครอง",
+            "อย่าดูเฉพาะความไม่สุจริตของผู้แย่ง ให้ดูอายุความหรือกำหนดเวลาฟ้องเอาคืนด้วย",
+            "พิจารณามาตรา 1375 โดยเฉพาะกำหนดหนึ่งปี"
+          ],
+          modelAnswer: {
+            source: "แนวตอบเรียบเรียงจากไฟล์เก็ง หน้า 43-44",
+            paragraph: "ข้อเท็จจริงเป็นการแย่งการครอบครอง เพราะนาย ก. เข้าไปครอบครองที่ดินมือเปล่าของนาย ข. โดยมิชอบ ตาม <mark>มาตรา 1375</mark> ผู้ครอบครองมีสิทธิฟ้องเอาคืนการครอบครองได้ แต่ต้องฟ้องภายในหนึ่งปีนับแต่เวลาถูกแย่งการครอบครอง เมื่อเวลาผ่านไปกว่า 10 ปี นาย ข. จึงพ้นกำหนดฟ้องเอาคืนการครอบครอง ดังนั้นนาย ก. <mark>มีข้อต่อสู้เรื่องพ้นกำหนดหนึ่งปี</mark>",
+            highlights: [
+              { type: "issue", text: "ประเด็น: เอาคืนการครอบครอง" },
+              { type: "rule", text: "Rule: ม.1375 กำหนดหนึ่งปี" },
+              { type: "fact", text: "Fact: ผ่านไปกว่า 10 ปี" },
+              { type: "conclusion", text: "Conclusion: นาย ก. มีข้อต่อสู้" }
+            ],
+            steps: [
+              "ระบุว่าการกระทำของนาย ก. เป็นการแย่งการครอบครอง",
+              "อธิบายมาตรา 1375 เรื่องสิทธิฟ้องเอาคืนการครอบครองและกำหนดหนึ่งปี",
+              "ปรับบทว่าเวลาผ่านกว่า 10 ปี จึงพ้นกำหนดฟ้อง",
+              "สรุปว่านาย ก. มีข้อต่อสู้ตามมาตรา 1375 วรรคสอง"
+            ]
+          }
+        },
+        {
+          id: "q-exam-prep-adverse-possession-transfer-time",
+          title: "แนวเก็ง: นับเวลาครอบครองปรปักษ์ต่อจากผู้โอน",
+          type: "subjective",
+          level: 3,
+          module: "ครอบครองปรปักษ์",
+          source: "ชุดเก็งอัตนัย หน้า 40-41",
+          statutes: ["1382", "1385"],
+          scenario: "หนึ่งเข้าทำกินในที่ดินมีโฉนดของสองโดยเข้าใจว่าเป็นที่ดินรกร้างว่างเปล่าเป็นเวลา 4 ปี ต่อมาหนึ่งขายที่ดินนั้นให้สามโดยสามไม่ทราบความเป็นมา และสามทำกินต่ออีก 7 ปี",
+          question: "ให้วินิจฉัยว่าสามมีข้อต่อสู้ว่าได้กรรมสิทธิ์โดยครอบครองปรปักษ์หรือไม่ และนับเวลาครอบครองของหนึ่งรวมกับของสามได้หรือไม่",
+          criteria: [
+            { id: "adverse_elements", label: "วิเคราะห์องค์ประกอบครอบครองปรปักษ์ตามมาตรา 1382", points: 4, keywords: ["1382", "สงบ", "เปิดเผย", "เจตนาเป็นเจ้าของ"] },
+            { id: "transfer_time", label: "วิเคราะห์การนับเวลาผู้โอนรวมกับผู้รับโอนตามมาตรา 1385", points: 4, keywords: ["1385", "นับเวลา", "ผู้โอน", "ผู้รับโอน"] },
+            { id: "duration", label: "รวมระยะเวลา 4 ปีและ 7 ปีได้ถูกต้อง", points: 2, keywords: ["4 ปี", "7 ปี", "10 ปี", "รวม"] },
+            { id: "conclusion", label: "สรุปว่าสามมีข้อต่อสู้หรือไม่", points: 2, keywords: ["สาม", "กรรมสิทธิ์", "ครอบครองปรปักษ์"] }
+          ],
+          hints: [
+            "โฟกัสครอบครองปรปักษ์และการนับเวลาครอบครองต่อเนื่อง",
+            "ดูว่าเป็นการครอบครองทรัพย์ของผู้อื่นโดยสงบ เปิดเผย เจตนาเป็นเจ้าของ และมีการโอนการครอบครองหรือไม่",
+            "พิจารณามาตรา 1382 ประกอบมาตรา 1385"
+          ],
+          modelAnswer: {
+            source: "แนวตอบเรียบเรียงจากไฟล์เก็ง หน้า 41",
+            paragraph: "หนึ่งครอบครองที่ดินของสองโดยสงบ เปิดเผย และมีเจตนาเป็นเจ้าของเป็นเวลา 4 ปี จึงเข้าองค์ประกอบเบื้องต้นของ <mark>มาตรา 1382</mark> ต่อมาเมื่อหนึ่งโอนการครอบครองให้สาม สามสามารถนับเวลาครอบครองของหนึ่งรวมกับเวลาของตนได้ตาม <mark>มาตรา 1385</mark> หากการครอบครองต่อเนื่องกัน เมื่อรวม 4 ปีของหนึ่งกับ 7 ปีของสามแล้วเกิน 10 ปี สามจึง <mark>มีข้อต่อสู้ว่าได้กรรมสิทธิ์โดยครอบครองปรปักษ์</mark>",
+            highlights: [
+              { type: "issue", text: "ประเด็น: ครอบครองปรปักษ์ต่อเนื่อง" },
+              { type: "rule", text: "Rule: ม.1382 + ม.1385" },
+              { type: "fact", text: "Fact: หนึ่ง 4 ปี + สาม 7 ปี" },
+              { type: "conclusion", text: "Conclusion: สามมีข้อต่อสู้" }
+            ],
+            steps: [
+              "วิเคราะห์องค์ประกอบครอบครองปรปักษ์ของหนึ่งตามมาตรา 1382",
+              "พิจารณาการโอนการครอบครองจากหนึ่งไปสาม",
+              "ใช้มาตรา 1385 นับเวลาครอบครองของผู้โอนรวมกับผู้รับโอน",
+              "รวมระยะเวลา 4 ปีและ 7 ปี จึงครบกว่า 10 ปี",
+              "สรุปว่าสามมีข้อต่อสู้เรื่องได้กรรมสิทธิ์โดยครอบครองปรปักษ์"
+            ]
+          }
+        },
+        {
+          id: "q-15-unregistered-real-right-third-party",
+          title: "ทรัพยสิทธิที่ยังไม่จดทะเบียนกับบุคคลภายนอก",
+          type: "subjective",
+          level: 3,
+          module: "การได้มาซึ่งอสังหาริมทรัพย์",
+          source: "หน่วย 15",
+          statutes: ["1299", "1410"],
+          scenario: "นาย ก. เจ้าของที่ดินทำสัญญาเป็นหนังสือให้นาย ข. มีสิทธิเหนือพื้นดินเพื่อสร้างอาคารบนที่ดิน แต่ยังไม่ได้จดทะเบียน ต่อมานาย ก. โอนขายที่ดินให้นาย ค. ซึ่งตรวจทะเบียนแล้วไม่พบสิทธิดังกล่าว นาย ข. สร้างอาคารไปบางส่วนและต้องการอ้างสิทธิเหนือพื้นดินต่อ นาย ค.",
+          question: "ให้นักเรียนวินิจฉัยผลของการได้มาซึ่งทรัพยสิทธิอันเกี่ยวกับอสังหาริมทรัพย์ที่ยังไม่จดทะเบียน ผลระหว่างคู่กรณี ผลต่อบุคคลภายนอก และแนวทางเยียวยาที่ควรพิจารณา",
+          criteria: [
+            { id: "issue_spotting", label: "จับประเด็นสิทธิเหนือพื้นดิน จดทะเบียน และบุคคลภายนอก", points: 4, keywords: ["สิทธิเหนือพื้นดิน", "จดทะเบียน", "บุคคลภายนอก"] },
+            { id: "rule_1299_1410", label: "ระบุหลักมาตรา 1299 และ 1410 ถูกต้อง", points: 5, keywords: ["1299", "1410", "ทรัพยสิทธิ", "อสังหาริมทรัพย์"] },
+            { id: "party_effect", label: "แยกผลระหว่างคู่กรณีกับบุคคลภายนอก", points: 5, keywords: ["ระหว่างคู่กรณี", "นาย ก", "นาย ค", "อ้างต่อ"] },
+            { id: "remedies", label: "วิเคราะห์ทางเยียวยาหรือความเสียหาย", points: 4, keywords: ["เยียวยา", "ค่าเสียหาย", "เรียกร้อง"] },
+            { id: "conclusion", label: "สรุปผลเป็นระบบ", points: 2, keywords: ["สรุป", "ไม่ได้จดทะเบียน", "ไม่พบสิทธิ"] }
+          ],
+          hints: [
+            "โจทย์นี้เกี่ยวกับการได้มาซึ่งทรัพยสิทธิอันเกี่ยวกับอสังหาริมทรัพย์และผลต่อบุคคลภายนอก",
+            "แยกผลระหว่างนาย ก. กับนาย ข. ออกจากผลที่นาย ข. จะอ้างต่อ นาย ค.",
+            "พิจารณามาตรา 1299 และสิทธิเหนือพื้นดินตามมาตรา 1410"
+          ],
+          modelAnswer: {
+            source: "แนวฝึกจากหน่วยเก็ง มสธ. 41215 หน่วย 15",
+            paragraph: "โจทย์นี้ต้องแยกผลระหว่างคู่กรณีเดิมกับผลต่อบุคคลภายนอก สิทธิเหนือพื้นดินเป็นทรัพยสิทธิตาม <mark>มาตรา 1410</mark> แต่การได้มาซึ่งทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์ต้องพิจารณาแบบและการจดทะเบียนตาม <mark>มาตรา 1299</mark> เมื่อนาย ก. กับนาย ข. ทำสัญญาแต่ยังไม่ได้จดทะเบียน นาย ข. อาจมีสิทธิเรียกร้องต่อนาย ก. ตามข้อตกลงเดิม แต่จะอ้างเป็นทรัพยสิทธิต่อ นาย ค. ผู้รับโอนซึ่งตรวจทะเบียนไม่พบสิทธิได้ยาก แนวตอบจึงควรสรุปว่า นาย ข. ควรไปพิจารณาเยียวยาจากนาย ก. หรือค่าเสียหายตามข้อเท็จจริงมากกว่าจะอ้างสิทธิเหนือพื้นดินต่อนาย ค.",
+            highlights: [
+              { type: "issue", text: "ประเด็น: ไม่จดทะเบียน แต่อ้างต่อบุคคลภายนอก" },
+              { type: "rule", text: "Rule: ม.1410 + ม.1299" },
+              { type: "fact", text: "Fact: นาย ค. ตรวจทะเบียนไม่พบสิทธิ" },
+              { type: "conclusion", text: "Conclusion: อ้างต่อ นาย ค. ได้ยาก" }
+            ],
+            steps: [
+              "ประเด็นหลักคือการได้มาซึ่งสิทธิเหนือพื้นดินซึ่งเป็นทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์ แต่ยังไม่ได้จดทะเบียน",
+              "มาตรา 1410 ใช้พิจารณาลักษณะสิทธิเหนือพื้นดิน ส่วนมาตรา 1299 ใช้พิจารณาแบบและผลการจดทะเบียน",
+              "ระหว่างนาย ก. กับนาย ข. อาจมีผลตามข้อตกลง แต่การอ้างเป็นทรัพยสิทธิต่อ นาย ค. ผู้รับโอนซึ่งตรวจทะเบียนไม่พบสิทธิ ย่อมมีปัญหา",
+              "แนวตอบควรแยกผลต่อคู่กรณีเดิม ผลต่อบุคคลภายนอก และทางเยียวยาของนาย ข. เช่น เรียกร้องจากนาย ก. หรือค่าเสียหายตามข้อเท็จจริง",
+              "สรุป นาย ข. มีปัญหาในการอ้างสิทธิเหนือพื้นดินต่อ นาย ค. เพราะยังไม่ได้จดทะเบียน แต่ไม่ตัดสิทธิเรียกร้องอื่นต่อ นาย ก."
+            ]
+          }
+        }
+      ];
+
+      function parseTableCriteria(criteriaText, statutes) {
+        if (!criteriaText) {
+          return [
+            { id: "issue", label: "จับประเด็นข้อกฎหมาย", points: 2, keywords: statutes },
+            { id: "rule", label: "ระบุมาตราที่เกี่ยวข้อง", points: 3, keywords: statutes },
+            { id: "application", label: "ปรับข้อเท็จจริงเข้ากับหลักกฎหมาย", points: 3, keywords: ["วินิจฉัย", "ปรับบท", "ข้อเท็จจริง"] },
+            { id: "conclusion", label: "สรุปผลทางกฎหมาย", points: 2, keywords: ["สรุป", "ดังนั้น", "จึง"] }
+          ];
+        }
+        return criteriaText.split("|").map((raw, index) => {
+          const text = raw.trim();
+          const pointMatch = text.match(/\((\d+) คะแนน\)/);
+          const label = text.replace(/\s*\(\d+ คะแนน\)/, "");
+          return {
+            id: `criteria_${index + 1}`,
+            label,
+            points: pointMatch ? Number(pointMatch[1]) : 2,
+            keywords: [...statutes, ...label.split(/\s+/).filter(word => word.length > 2).slice(0, 4)]
+          };
+        });
+      }
+
+      function tableRowToQuestion(row) {
+        const statutes = row.statutes || [];
+        const source = cleanSourceLabel(row.source);
+        return {
+          id: row.question_id,
+          courseId: row.course_id || DEFAULT_COURSE_ID,
+          title: row.title,
+          type: "subjective",
+          level: Number(row.level),
+          module: row.module,
+          source,
+          statutes,
+          scenario: row.scenario,
+          question: row.question,
+          criteria: parseTableCriteria(row.criteria, statutes),
+          hints: [row.hint_1, row.hint_2, row.hint_3].filter(Boolean),
+          modelAnswer: {
+            source: cleanSourceLabel(row.source_note || source),
+            paragraph: row.model_answer.replace(/(มาตรา\s*\d+)/g, "<mark>$1</mark>"),
+            highlights: [
+              { type: "issue", text: `ประเด็น: ${row.title}` },
+              { type: "rule", text: `Rule: ม.${statutes.join(" + ม.")}` },
+              { type: "fact", text: `หมวด: ${row.module}` },
+              { type: "conclusion", text: "Conclusion: ดูแนวเฉลยย่อหน้า" }
+            ],
+            steps: (row.answer_steps || []).map(cleanAnswerStep).filter(Boolean)
+          }
+        };
+      }
+
+      const choiceLetters = ["ก", "ข", "ค", "ง", "จ", "ฉ", "ช", "ซ", "ฌ", "ญ"];
+
+      function normalizeStatutes(value) {
+        return [...new Set(String(value || "")
+          .split(",")
+          .map(item => item.trim().replace(/^มาตรา\s*/u, ""))
+          .filter(Boolean))];
+      }
+
+      function moduleLabel(moduleId) {
+        return {
+          "module-01-torts-unjust-enrichment": "ละเมิด / จัดการงานนอกสั่ง / ลาภมิควรได้",
+          "module-02-property": "ทรัพย์สิน"
+        }[moduleId] || moduleId || "Level 1";
+      }
+
+      function cleanSourceLabel(source) {
+        const label = String(source || "").trim();
+        const hiddenLabels = ["คำถามที่" + "เขียนตอบ", "นำเข้า" + "จากไฟล์แนบ"];
+        if (!label || hiddenLabels.includes(label)) {
+          return "คำถาม";
+        }
+        return hiddenLabels.reduce((cleaned, hidden) => cleaned.split(hidden).join("คำถาม"), label);
+      }
+
+      function parseChoiceText(choiceText) {
+        const choices = [];
+        const lines = String(choiceText || "").replace(/\\n/g, "\n").split("\n").map(line => line.trim()).filter(Boolean);
+        for (const line of lines) {
+          const match = line.match(/^([กขคงจฉชซฌญ])\.\s*(.+)$/);
+          if (match) {
+            choices.push({ id: match[1], text: match[2] });
+          }
+        }
+        return choices;
+      }
+
+      function parseNumberedPrompts(choiceText) {
+        return String(choiceText || "")
+          .replace(/\\n/g, "\n")
+          .split("\n")
+          .map(line => line.trim())
+          .filter(Boolean)
+          .map(line => line.replace(/^\d+\.\s*/, ""));
+      }
+
+      function parseMatchingPairs(choiceText, answerText) {
+        const prompts = parseNumberedPrompts(choiceText);
+        const answerByIndex = new Map(
+          String(answerText || "")
+            .split("|")
+            .map(item => item.trim())
+            .filter(Boolean)
+            .map(item => {
+              const [index, answer] = item.split("=").map(part => part.trim());
+              return [Number(index) - 1, answer];
+            })
+        );
+        return prompts
+          .map((prompt, index) => ({ prompt, answer: answerByIndex.get(index) || "" }))
+          .filter(pair => pair.prompt && pair.answer);
+      }
+
+      function parseDragQuestion(row) {
+        const choiceText = String(row["ตัวเลือก (Choices)"] || "").replace(/\\n/g, "\n");
+        const itemLine = choiceText.split("\n").find(line => line.startsWith("รายการลาก:")) || "";
+        const zoneLine = choiceText.split("\n").find(line => line.startsWith("กล่องคำตอบ:")) || "";
+        const dragItems = itemLine.replace("รายการลาก:", "").split("|").map(item => {
+          const [id, text] = item.split("=").map(part => part.trim());
+          return id && text ? { id, text } : null;
+        }).filter(Boolean);
+        const dropZones = zoneLine.replace("กล่องคำตอบ:", "").split("|").map(item => {
+          const [id, label] = item.split("=").map(part => part.trim());
+          return id && label ? { id, label } : null;
+        }).filter(Boolean);
+        const zoneByLabel = new Map(dropZones.map(zone => [zone.label, zone.id]));
+        const itemByText = new Map(dragItems.map(item => [item.text, item.id]));
+        const mapping = {};
+        String(row["เฉลย (Answer)"] || "").split("|").forEach(item => {
+          const [text, label] = item.split("=").map(part => part.trim());
+          const itemId = itemByText.get(text);
+          const zoneId = zoneByLabel.get(label);
+          if (itemId && zoneId) mapping[itemId] = zoneId;
+        });
+        return dragItems.length && dropZones.length && Object.keys(mapping).length
+          ? { type: "drag_drop", dragItems, dropZones, mapping }
+          : null;
+      }
+
+      function levelOneRowToQuestion(row) {
+        const format = String(row["รูปแบบโจทย์"] || "").toLowerCase();
+        const explanation = row["คำอธิบายเหตุผล (Explanation)"] || "ดูคำอธิบายประกอบเฉลย";
+        const base = {
+          id: row.question_id,
+          courseId: row.course_id || DEFAULT_COURSE_ID,
+          title: row.title || row["คำถาม (Question)"],
+          level: Number(row.level || 1),
+          module: moduleLabel(row.module_id),
+          source: "คำถาม",
+          statutes: normalizeStatutes(row["มาตราที่เกี่ยวข้อง (Sections)"]),
+          scenario: row.source_kind === "existing_level_1_yaml" ? row["คำถาม (Question)"] : "",
+          question: row.source_kind === "existing_level_1_yaml" ? "เลือกคำตอบที่ถูกต้อง" : row["คำถาม (Question)"],
+          hints: [row.hint_1, row.hint_2, row.hint_3].filter(Boolean)
+        };
+
+        if (format.includes("drag")) {
+          const parsed = parseDragQuestion(row);
+          if (parsed) return { ...base, ...parsed };
+        }
+
+        if (format.includes("matching")) {
+          const pairs = parseMatchingPairs(row["ตัวเลือก (Choices)"], row["เฉลย (Answer)"]);
+          const options = [...new Set(pairs.map(pair => pair.answer))];
+          if (pairs.length) {
+            return {
+              ...base,
+              type: "matching",
+              pairs,
+              options,
+              hints: base.hints.length ? base.hints : ["จับคู่ข้อความกับคำตอบที่สัมพันธ์กันมากที่สุด"]
+            };
+          }
+        }
+
+        const answer = String(row["เฉลย (Answer)"] || "").trim();
+        const choices = parseChoiceText(row["ตัวเลือก (Choices)"]).map(choice => ({
+          ...choice,
+          correct: choice.id === answer,
+          rationale: choice.id === answer ? explanation : `คำตอบที่ถูกคือ ${answer}. ${explanation}`
+        }));
+        return {
+          ...base,
+          type: "mcq",
+          choices,
+          hints: base.hints.length ? base.hints : [
+            "อ่านโจทย์แล้วแยกว่าถามองค์ประกอบ หลักทั่วไป หรือมาตราที่ต้องใช้",
+            "ตัดตัวเลือกที่ขัดกับคำสำคัญในมาตราหรือหลักกฎหมาย",
+            base.statutes.length ? `พิจารณามาตรา ${base.statutes.join(", ")}` : "พิจารณาหลักกฎหมายที่เกี่ยวข้อง"
+          ]
+        };
+      }
+
+      const writingTableQuestions = courseCatalog.flatMap(course =>
+        (window[course.questionGlobal] || [])
+          .map(row => ({ ...row, course_id: row.course_id || course.id }))
+          .filter(row => row.status === "ready")
+          .map(tableRowToQuestion)
+      );
+
+      if (writingTableQuestions.length) {
+        const writingIds = new Set(writingTableQuestions.map(question => question.id));
+        for (let index = questions.length - 1; index >= 0; index -= 1) {
+          if (questions[index].type === "subjective" && writingIds.has(questions[index].id)) {
+            questions.splice(index, 1);
+          }
+        }
+        questions.push(...writingTableQuestions);
+      }
+
+      const levelOneQuestions = courseCatalog.flatMap(course =>
+        (window[course.levelOneGlobal] || [])
+          .map(row => ({ ...row, course_id: row.course_id || course.id }))
+          .map(levelOneRowToQuestion)
+      );
+
+      if (levelOneQuestions.length) {
+        const levelOneIds = new Set(levelOneQuestions.map(question => question.id));
+        for (let index = questions.length - 1; index >= 0; index -= 1) {
+          if (levelOneIds.has(questions[index].id)) {
+            questions.splice(index, 1);
+          }
+        }
+        questions.unshift(...levelOneQuestions);
+      }
+
+      questions.forEach(question => {
+        question.courseId = question.courseId || DEFAULT_COURSE_ID;
+      });
+
+      const progressKey = "lexicore_trial_practice_progress_v1";
+      const state = {
+        courseId: DEFAULT_COURSE_ID,
+        index: 0,
+        level: 1,
+        search: "",
+        statusFilter: "all",
+        completed: loadProgress(),
+        hintsUsed: 0,
+        selected: {},
+        matches: {},
+        drops: {},
+        fontStep: 0,
+        answerShown: false
+      };
+      const list = document.getElementById("questionList");
+      const courseTabs = document.getElementById("courseTabs");
+      const levelTabs = document.getElementById("levelTabs");
+      const questionSearch = document.getElementById("questionSearch");
+      const statusFilters = document.getElementById("statusFilters");
+      const panel = document.getElementById("practicePanel");
+      const summary = document.getElementById("summary");
+      const fontSizes = ["0.92rem", "1rem", "1.12rem", "1.24rem"];
+
+      function loadProgress() {
+        try {
+          return JSON.parse(localStorage.getItem(progressKey) || "{}");
+        } catch (error) {
+          return {};
+        }
+      }
+
+      function saveProgress() {
+        try {
+          localStorage.setItem(progressKey, JSON.stringify(state.completed));
+        } catch (error) {
+          // Ignore storage failures in local file mode.
+        }
+      }
+
+      function markCompleted(questionId) {
+        state.completed[questionId] = new Date().toISOString();
+        saveProgress();
+      }
+
+      function unmarkCompleted(questionId) {
+        delete state.completed[questionId];
+        saveProgress();
+      }
+
+      function isCompleted(questionId) {
+        return Boolean(state.completed[questionId]);
+      }
+
+      function currentFontSize() {
+        return fontSizes[Math.min(Math.max(state.fontStep + 1, 0), fontSizes.length - 1)];
+      }
+
+      function applyFontSize() {
+        document.documentElement.style.setProperty("--practice-font-size", currentFontSize());
+      }
+
+      function currentCourse() {
+        return courseCatalog.find(course => course.id === state.courseId) || courseCatalog[0];
+      }
+
+      function courseQuestions() {
+        return questions.filter(q => q.courseId === state.courseId);
+      }
+
+      function firstAvailableLevel(courseId) {
+        const courseLevels = questions
+          .filter(q => q.courseId === courseId)
+          .map(q => q.level)
+          .sort((a, b) => a - b);
+        return courseLevels[0] || 1;
+      }
+
+      function visibleQuestions() {
+        const search = state.search.trim().toLowerCase();
+        return courseQuestions().filter(q => {
+          if (q.level !== state.level) return false;
+          const done = isCompleted(q.id);
+          if (state.statusFilter === "todo" && done) return false;
+          if (state.statusFilter === "done" && !done) return false;
+          if (!search) return true;
+          const haystack = [
+            q.title,
+            q.module,
+            q.source,
+            q.scenario,
+            q.question,
+            ...(q.statutes || [])
+          ].join(" ").toLowerCase();
+          return haystack.includes(search);
+        });
+      }
+
+      function bindTools() {
+        questionSearch.addEventListener("input", () => {
+          state.search = questionSearch.value;
+          state.index = 0;
+          resetQuestionState();
+          render();
+        });
+        statusFilters.querySelectorAll("button").forEach(button => {
+          button.addEventListener("click", () => {
+            state.statusFilter = button.dataset.statusFilter;
+            state.index = 0;
+            resetQuestionState();
+            render();
+          });
+        });
+      }
+
+      function renderCourseTabs() {
+        courseTabs.innerHTML = courseCatalog.map(course => {
+          const count = questions.filter(q => q.courseId === course.id).length;
+          return `
+            <button class="course-tab ${state.courseId === course.id ? "active" : ""}" data-course-id="${course.id}">
+              <strong>${course.code}</strong>
+              <span>${course.title}</span>
+              <small>${count ? `${count} ข้อ` : course.note}</small>
+            </button>
+          `;
+        }).join("");
+        courseTabs.querySelectorAll("button").forEach(button => {
+          button.addEventListener("click", () => {
+            state.courseId = button.dataset.courseId;
+            state.level = firstAvailableLevel(state.courseId);
+            state.index = 0;
+            state.search = "";
+            state.statusFilter = "all";
+            questionSearch.value = "";
+            resetQuestionState();
+            render();
+          });
+        });
+      }
+
+      function renderLevelTabs() {
+        levelTabs.innerHTML = [1, 2, 3].map(level => {
+          const count = courseQuestions().filter(q => q.level === level).length;
+          return `<button class="level-tab ${state.level === level ? "active" : ""}" data-level="${level}">Level ${level}<br><span class="small">${count} ข้อ</span></button>`;
+        }).join("");
+        levelTabs.querySelectorAll("button").forEach(button => {
+          button.addEventListener("click", () => {
+            state.level = Number(button.dataset.level);
+            state.index = 0;
+            resetQuestionState();
+            render();
+          });
+        });
+      }
+
+      function renderList() {
+        const filtered = visibleQuestions();
+        if (!filtered.length) {
+          list.innerHTML = `<div class="question-empty">ยังไม่มีคำถามในระดับนี้สำหรับวิชาที่เลือก</div>`;
+          return;
+        }
+        list.innerHTML = filtered.map((q, i) => `
+          <button class="question-tab ${i === state.index ? "active" : ""} ${isCompleted(q.id) ? "done" : ""}" data-index="${i}">
+            <strong>ข้อ ${i + 1}</strong>
+            <span>Level ${q.level} · ${q.module}</span>
+            ${isCompleted(q.id) ? `<em class="done-badge">ทำแล้ว</em>` : ""}
+          </button>
+        `).join("");
+        list.querySelectorAll("button").forEach(button => {
+          button.addEventListener("click", () => {
+            state.index = Number(button.dataset.index);
+            resetQuestionState();
+            render();
+          });
+        });
+      }
+
+      function resetQuestionState() {
+        state.hintsUsed = 0;
+        state.selected = {};
+        state.matches = {};
+        state.drops = {};
+        state.answerShown = false;
+      }
+
+      function labelType(type) {
+        return { mcq: "ปรนัย", matching: "จับคู่", drag_drop: "ลากวาง", subjective: "เขียนตอบ" }[type] || type;
+      }
+
+      function meta(q) {
+        return `
+          <div class="meta">
+            <span class="pill">Level ${q.level}</span>
+            <span class="pill">${labelType(q.type)}</span>
+            <span class="pill">${q.module}</span>
+            <span class="pill">${q.source}</span>
+          </div>
+          <div class="statute-row">
+            <div class="statute-row-label">มาตราที่เกี่ยวข้อง</div>
+            <div class="statute-buttons">${q.statutes.map(s => `<button class="statute-button" data-statute="${s}" type="button">${statuteButtonText(s)}</button>`).join("")}</div>
+          </div>
+          <div id="statuteInlineNote"></div>
+        `;
+      }
+
+      function render() {
+        const course = currentCourse();
+        const totalInCourse = courseQuestions().length;
+        const doneInCourse = courseQuestions().filter(q => isCompleted(q.id)).length;
+        summary.textContent = `${course.code} ${course.title} · ${doneInCourse}/${totalInCourse} ข้อทำแล้ว`;
+        statusFilters.querySelectorAll("button").forEach(button => {
+          button.classList.toggle("active", button.dataset.statusFilter === state.statusFilter);
+        });
+        if (questionSearch.value !== state.search) {
+          questionSearch.value = state.search;
+        }
+        renderCourseTabs();
+        renderLevelTabs();
+        renderList();
+        const q = visibleQuestions()[state.index];
+        if (!q) {
+          panel.innerHTML = `
+            <div class="empty-state">
+              <h2>${course.code} ${course.title}</h2>
+              <p>ยังไม่มีคำถามพร้อมใช้ใน Level ${state.level} สำหรับวิชานี้</p>
+            </div>
+          `;
+          return;
+        }
+        panel.innerHTML = `
+          ${meta(q)}
+          <div class="reader-toolbar" aria-label="เครื่องมืออ่านคำถาม">
+            <div class="reader-toolbar-group">
+              <span class="reader-toolbar-label">ขนาดตัวอักษร</span>
+              <button id="fontSmallerBtn" type="button" aria-label="ลดขนาดตัวอักษร">ก-</button>
+              <button id="fontLargerBtn" type="button" aria-label="เพิ่มขนาดตัวอักษร">ก+</button>
+            </div>
+            <div class="reader-toolbar-group">
+              <button id="highlightBtn" type="button">Highlight</button>
+              <button id="clearHighlightBtn" type="button">ลบ highlight</button>
+            </div>
+          </div>
+          <div class="reading-surface" id="readingSurface">
+            <h2>${q.title}</h2>
+            ${q.scenario ? `<div class="scenario">${q.scenario}</div>` : ""}
+            <div class="question-text">${q.question}</div>
+            <div id="answerArea">${renderAnswer(q)}</div>
+            <div id="answerAreaReveal"></div>
+          </div>
+          <div class="controls">
+            <button id="hintBtn">ขอคำใบ้ (${state.hintsUsed}/3)</button>
+            <button class="primary" id="submitBtn">ส่งคำตอบ</button>
+            ${q.type === "subjective" ? `<button id="answerBtn">ดูเฉลย</button>` : ""}
+            <button id="resetBtn">เริ่มข้อนี้ใหม่</button>
+          </div>
+          <div id="hintArea"></div>
+          <div id="resultArea"></div>
+        `;
+        bindAnswer(q);
+        bindStatuteButtons(panel, q);
+        bindReaderTools();
+        document.getElementById("hintBtn").addEventListener("click", showHint);
+        document.getElementById("submitBtn").addEventListener("click", submitAnswer);
+        if (q.type === "subjective") {
+          document.getElementById("answerBtn").addEventListener("click", () => showModelAnswer(q));
+        }
+        document.getElementById("resetBtn").addEventListener("click", () => {
+          unmarkCompleted(q.id);
+          resetQuestionState();
+          const remaining = visibleQuestions();
+          state.index = Math.min(state.index, Math.max(remaining.length - 1, 0));
+          render();
+        });
+      }
+
+      function bindReaderTools() {
+        applyFontSize();
+        document.getElementById("fontSmallerBtn").addEventListener("click", () => {
+          state.fontStep = Math.max(state.fontStep - 1, -1);
+          applyFontSize();
+        });
+        document.getElementById("fontLargerBtn").addEventListener("click", () => {
+          state.fontStep = Math.min(state.fontStep + 1, 2);
+          applyFontSize();
+        });
+        document.getElementById("highlightBtn").addEventListener("click", highlightSelection);
+        document.getElementById("clearHighlightBtn").addEventListener("click", clearHighlight);
+      }
+
+      function highlightSelection() {
+        const surface = document.getElementById("readingSurface");
+        const selection = window.getSelection();
+        if (!surface || !selection || selection.rangeCount === 0 || selection.isCollapsed) return;
+        const range = selection.getRangeAt(0);
+        if (!surface.contains(range.commonAncestorContainer)) return;
+        const highlight = document.createElement("span");
+        highlight.className = "user-highlight";
+        try {
+          range.surroundContents(highlight);
+        } catch (error) {
+          const fragment = range.extractContents();
+          highlight.appendChild(fragment);
+          range.insertNode(highlight);
+        }
+        selection.removeAllRanges();
+      }
+
+      function unwrapHighlight(node) {
+        const parent = node.parentNode;
+        if (!parent) return;
+        while (node.firstChild) parent.insertBefore(node.firstChild, node);
+        parent.removeChild(node);
+        parent.normalize();
+      }
+
+      function clearHighlight() {
+        const surface = document.getElementById("readingSurface");
+        if (!surface) return;
+        const selection = window.getSelection();
+        const selectedNode = selection && selection.rangeCount
+          ? selection.getRangeAt(0).commonAncestorContainer
+          : null;
+        const selectedHighlight = selectedNode?.nodeType === Node.ELEMENT_NODE
+          ? selectedNode.closest?.(".user-highlight")
+          : selectedNode?.parentElement?.closest(".user-highlight");
+        if (selectedHighlight && surface.contains(selectedHighlight)) {
+          unwrapHighlight(selectedHighlight);
+          selection.removeAllRanges();
+          return;
+        }
+        surface.querySelectorAll(".user-highlight").forEach(unwrapHighlight);
+      }
+
+      function renderAnswer(q) {
+        if (q.type === "mcq") {
+          return `<div class="choices">${q.choices.map(c => `
+            <label class="choice">
+              <input type="radio" name="choice" value="${c.id}" />
+              <span>${c.text}</span>
+            </label>
+          `).join("")}</div>`;
+        }
+        if (q.type === "matching") {
+          return `<div class="matching">${q.pairs.map((p, i) => `
+            <div class="match-row">
+              <div>${p.prompt}</div>
+              <select data-match="${i}">
+                <option value="">เลือกคำตอบ</option>
+                ${q.options.map(o => `<option value="${o}">${o}</option>`).join("")}
+              </select>
+            </div>
+          `).join("")}</div>`;
+        }
+        if (q.type === "drag_drop") {
+          return `
+            <div class="drag-grid">
+              <div>
+                <h3>ข้อเท็จจริง</h3>
+                ${q.dragItems.map(item => `<div class="drag-item" draggable="true" data-drag="${item.id}">${item.text}</div>`).join("")}
+              </div>
+              <div>
+                <h3>องค์ประกอบ</h3>
+                ${q.dropZones.map(zone => `<div class="drop-zone" data-drop="${zone.id}"><h3>${zone.label}</h3><div class="small">วางข้อเท็จจริงที่นี่</div></div>`).join("")}
+              </div>
+            </div>
+          `;
+        }
+        return `<textarea id="subjectiveAnswer" placeholder="พิมพ์คำตอบแบบ หลักกฎหมาย -> วินิจฉัย/ปรับบท -> สรุป"></textarea>
+          <p class="small">หน้านี้ใช้ตัวตรวจคำตอบแบบทดลองจาก keyword/rubric ในเครื่อง ยังไม่เรียก LLM API จริง</p>`;
+      }
+
+      function bindAnswer(q) {
+        if (q.type === "matching") {
+          panel.querySelectorAll("select[data-match]").forEach(select => {
+            select.addEventListener("change", () => {
+              state.matches[select.dataset.match] = select.value;
+            });
+          });
+        }
+        if (q.type === "drag_drop") {
+          let dragged = null;
+          panel.querySelectorAll("[data-drag]").forEach(item => {
+            item.addEventListener("dragstart", () => { dragged = item.dataset.drag; });
+          });
+          panel.querySelectorAll("[data-drop]").forEach(zone => {
+            zone.addEventListener("dragover", event => event.preventDefault());
+            zone.addEventListener("drop", event => {
+              event.preventDefault();
+              if (!dragged) return;
+              const item = q.dragItems.find(d => d.id === dragged);
+              state.drops[dragged] = zone.dataset.drop;
+              zone.querySelector(".small").textContent = item.text;
+              panel.querySelector(`[data-drag="${dragged}"]`).classList.add("used");
+            });
+          });
+        }
+      }
+
+      function showHint() {
+        const q = visibleQuestions()[state.index];
+        if (state.hintsUsed >= q.hints.length) return;
+        state.hintsUsed += 1;
+        document.getElementById("hintArea").innerHTML = `
+          <div class="hint-box">
+            <strong>Hint ${state.hintsUsed}</strong>
+            <div>${q.hints[state.hintsUsed - 1]}</div>
+            ${renderStatuteDetails(q)}
+            <div class="small">ใช้ hint แล้ว โบนัสจำลองจะลดลง ${state.hintsUsed} คะแนน</div>
+          </div>
+        `;
+        bindStatuteButtons(document.getElementById("hintArea"), q);
+        document.getElementById("hintBtn").textContent = `ขอคำใบ้ (${state.hintsUsed}/3)`;
+        if (state.hintsUsed >= 3) document.getElementById("hintBtn").disabled = true;
+      }
+
+      function submitAnswer() {
+        const q = visibleQuestions()[state.index];
+        let submitted = false;
+        if (q.type === "mcq") submitted = gradeMcq(q);
+        else if (q.type === "matching") submitted = gradeMatching(q);
+        else if (q.type === "drag_drop") submitted = gradeDrag(q);
+        else submitted = gradeSubjective(q);
+        if (submitted) {
+          markCompleted(q.id);
+          if (state.statusFilter === "todo") {
+            const remaining = visibleQuestions();
+            state.index = Math.min(state.index, Math.max(remaining.length - 1, 0));
+            resetQuestionState();
+            render();
+            return true;
+          }
+          renderList();
+          const course = currentCourse();
+          const totalInCourse = courseQuestions().length;
+          const doneInCourse = courseQuestions().filter(question => isCompleted(question.id)).length;
+          summary.textContent = `${course.code} ${course.title} · ${doneInCourse}/${totalInCourse} ข้อทำแล้ว`;
+        }
+        return submitted;
+      }
+
+      function renderStatuteDetails(q) {
+        if (!q.statutes.length) return "";
+        return `
+          <details>
+            <summary>เปิดดูตัวบทมาตราที่เกี่ยวข้อง</summary>
+            <div class="statute-box">
+              <div class="statute-buttons">${q.statutes.map(s => `<button class="statute-button" data-statute="${s}" type="button">${statuteButtonText(s)}</button>`).join("")}</div>
+              <div id="hintStatuteNote" class="inline-statute-note">กดปุ่มมาตราเพื่อดูตัวบทและจุดที่ควรนำไปใช้ตอบ</div>
+            </div>
+          </details>
+        `;
+      }
+
+      function renderStatuteShortNote(statute, courseId) {
+        const entry = statuteEntry(statute, courseId);
+        if (!entry) {
+          return `<div class="inline-statute-note">ยังไม่มีคำย่อสำหรับมาตรานี้ในตัวทดลอง</div>`;
+        }
+        if (typeof entry === "string") {
+          return `<div class="inline-statute-note"><strong>มาตรา ${statuteButtonText(statute)}</strong><br>${entry}</div>`;
+        }
+        return `
+          <div class="inline-statute-note">
+            <strong>มาตรา ${statuteButtonText(statute)}</strong><br>${entry.title}
+          </div>
+        `;
+      }
+
+      function renderStatuteLawNote(statute, courseId) {
+        const entry = statuteEntry(statute, courseId);
+        if (!entry) {
+          return `<div class="inline-statute-note">ยังไม่มีตัวบทสำหรับมาตรานี้ในตัวทดลอง</div>`;
+        }
+        if (typeof entry === "string") {
+          return `<div class="inline-statute-note"><strong>มาตรา ${statuteButtonText(statute)}</strong><br>${entry}</div>`;
+        }
+        const paragraphs = statuteContentForDisplay(entry, statute);
+        return `
+          <div class="inline-statute-note statute-law-text">
+            <strong>มาตรา ${statuteButtonText(statute)}: ${entry.title}</strong>
+            <blockquote>${paragraphs.map(paragraph => `<p>${paragraph}</p>`).join("")}</blockquote>
+            <div class="statute-law-note">${entry.note}</div>
+          </div>
+        `;
+      }
+
+      function bindStatuteButtons(scope, q) {
+        scope.querySelectorAll("[data-statute]").forEach(button => {
+          button.addEventListener("click", () => {
+            const statute = button.dataset.statute;
+            scope.querySelectorAll("[data-statute]").forEach(b => b.classList.toggle("active", b.dataset.statute === statute));
+            const localTarget = button.closest(".statute-box")?.querySelector("#hintStatuteNote");
+            const pageTarget = document.getElementById("statuteInlineNote");
+            const target = localTarget || pageTarget;
+            if (target) {
+              target.innerHTML = localTarget
+                ? renderStatuteLawNote(statute, q?.courseId)
+                : renderStatuteShortNote(statute, q?.courseId);
+            }
+          });
+        });
+      }
+
+      function showModelAnswer(q) {
+        const answer = q.modelAnswer || {
+          source: "แนวเฉลยจาก rubric",
+          steps: q.criteria.map(c => c.label),
+          highlights: []
+        };
+        const paragraph = answer.paragraph || answer.steps.join(" ");
+        const highlights = answer.highlights || [];
+        document.getElementById("answerAreaReveal").innerHTML = `
+          <div class="answer-box">
+            <h3>แนวเฉลย</h3>
+            <div class="answer-source">${answer.source}</div>
+            ${highlights.length ? `<div class="key-points">${highlights.map(item => `<span class="key-point ${item.type}">${item.text}</span>`).join("")}</div>` : ""}
+            <div class="model-paragraph">${formatModelParagraph(paragraph)}</div>
+            <details open>
+              <summary>ดูโครงสร้างการตอบแบบเป็นขั้น</summary>
+              <ol>${answer.steps.map(step => `<li>${cleanAnswerStep(step)}</li>`).join("")}</ol>
+            </details>
+          </div>
+        `;
+      }
+
+      function formatModelParagraph(paragraph) {
+        const text = String(paragraph || "")
+          .replace(/\s+(ต่อมา|นอกจากนี้|อย่างไรก็ดี|เมื่อ|ดังนั้น|หาก|แนวตอบจึงควรสรุปว่า)/g, "\n$1")
+          .replace(/\s+(ประเด็นต้องแยก|ต้องเริ่มจากแยกว่า|ข้อเท็จจริงเป็น|หนึ่งครอบครอง|โจทย์นี้ต้องแยก)/g, "\n$1");
+        const parts = text
+          .split(/\n+/)
+          .map(part => part.trim())
+          .filter(Boolean);
+        return parts.map(part => `<p>${part}</p>`).join("");
+      }
+
+      function renderResult({ score, max, title, lines, good }) {
+        const hintPenalty = state.hintsUsed;
+        const finalScore = Math.max(0, score - hintPenalty);
+        document.getElementById("resultArea").innerHTML = `
+          <div class="result ${good ? "good" : "bad"}">
+            <div class="score">${finalScore}/${max}</div>
+            <strong>${title}</strong>
+            <ul class="feedback-list">${lines.map(line => `<li>${line}</li>`).join("")}</ul>
+            <p class="small">คะแนนนี้หัก hint penalty แล้ว ${hintPenalty} คะแนน</p>
+          </div>
+        `;
+      }
+
+      function gradeMcq(q) {
+        const selected = panel.querySelector("input[name='choice']:checked");
+        if (!selected) {
+          renderResult({ score: 0, max: 1, title: "ยังไม่ได้เลือกคำตอบ", lines: ["เลือกตัวเลือกก่อนส่งคำตอบ"], good: false });
+          return false;
+        }
+        const choice = q.choices.find(c => c.id === selected.value);
+        renderResult({
+          score: choice.correct ? 1 : 0,
+          max: 1,
+          title: choice.correct ? "ถูกต้อง" : "ยังคลาดเคลื่อน",
+          lines: [choice.rationale],
+          good: choice.correct
+        });
+        return true;
+      }
+
+      function gradeMatching(q) {
+        let correct = 0;
+        const lines = q.pairs.map((p, i) => {
+          const answer = state.matches[i] || "";
+          const ok = answer === p.answer;
+          if (ok) correct += 1;
+          return `${ok ? "ถูก" : "ผิด"}: ${p.prompt} -> คำตอบที่ถูกคือ ${p.answer}`;
+        });
+        renderResult({ score: correct, max: q.pairs.length, title: "ผลการจับคู่", lines, good: correct === q.pairs.length });
+        return true;
+      }
+
+      function gradeDrag(q) {
+        let correct = 0;
+        const lines = q.dragItems.map(item => {
+          const expected = q.mapping[item.id];
+          const actual = state.drops[item.id];
+          const zone = q.dropZones.find(z => z.id === expected);
+          const ok = actual === expected;
+          if (ok) correct += 1;
+          return `${ok ? "ถูก" : "ผิด"}: ${item.text} -> ${zone.label}`;
+        });
+        renderResult({ score: correct, max: q.dragItems.length, title: "ผลการลากวาง", lines, good: correct === q.dragItems.length });
+        return true;
+      }
+
+      function gradeSubjective(q) {
+        const answer = (document.getElementById("subjectiveAnswer").value || "").toLowerCase();
+        if (answer.trim().length < 20) {
+          renderResult({ score: 0, max: q.criteria.reduce((a, c) => a + c.points, 0), title: "คำตอบยังสั้นเกินไป", lines: ["ลองเขียนให้ครบหลักกฎหมาย วินิจฉัย/ปรับบท และสรุป"], good: false });
+          return false;
+        }
+        let score = 0;
+        const lines = q.criteria.map(c => {
+          const hits = c.keywords.filter(k => answer.includes(k.toLowerCase())).length;
+          const earned = hits >= 2 ? c.points : hits === 1 ? Math.ceil(c.points / 2) : 0;
+          score += earned;
+          return `${earned > 0 ? "พบ" : "ยังไม่พบ"}: ${c.label} (${earned}/${c.points})`;
+        });
+        const max = q.criteria.reduce((a, c) => a + c.points, 0);
+        lines.push("คำแนะนำ: ตัวทดลองนี้ใช้ keyword/rubric แบบ local สำหรับลอง flow เท่านั้น เมื่อต่อ backend แล้วควรส่ง scenario, gold standard, rubric และคำตอบไปให้ LLM ตรวจเป็น JSON");
+        renderResult({ score, max, title: "ผลประเมินแบบทดลอง", lines, good: score >= Math.ceil(max * 0.6) });
+        return true;
+      }
+
+      bindTools();
+      render();
+    </script>
+  </body>
+</html>

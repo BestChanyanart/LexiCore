@@ -1,0 +1,2 @@
+question_id,course_id,module_id,level,title,รูปแบบโจทย์,คำถาม (Question),ตัวเลือก (Choices),เฉลย (Answer),คำอธิบายเหตุผล (Explanation),มาตราที่เกี่ยวข้อง (Sections),source_kind,hint_1,hint_2,hint_3
+q-level1-example,41216,module-01-example,1,ชื่อคำถามตัวอย่าง,MCQ,คำถามตัวอย่าง,"ก. ตัวเลือกที่หนึ่ง\nข. ตัวเลือกที่สอง\nค. ตัวเลือกที่สาม\nง. ตัวเลือกที่สี่",ก,อธิบายเหตุผลของคำตอบที่ถูก,59,pasted_quiz_data,คำใบ้ขั้นที่ 1,คำใบ้ขั้นที่ 2,คำใบ้ขั้นที่ 3

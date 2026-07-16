@@ -1,0 +1,2 @@
+question_id,status,course_id,level,module,source,statutes,title,scenario,question,model_answer,answer_steps,hint_1,hint_2,hint_3,criteria,source_note
+q-writing-example,ready,41216,2,หมวดตัวอย่าง,คำถาม,"59, 60",ชื่อคำถามตัวอย่าง,ข้อเท็จจริงตัวอย่าง,คำถามที่ต้องการให้ผู้เรียนวินิจฉัย,แนวตอบตัวอย่าง,ประเด็น | หลักกฎหมาย | ปรับบท | สรุป,คำใบ้ขั้นที่ 1,คำใบ้ขั้นที่ 2,คำใบ้ขั้นที่ 3,จับประเด็น (2 คะแนน) | ระบุหลักกฎหมาย (3 คะแนน) | ปรับบท (3 คะแนน) | สรุป (2 คะแนน),ที่มาแบบสั้น

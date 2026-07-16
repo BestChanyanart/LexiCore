@@ -1,0 +1,28 @@
+id: q-exam-prep-adverse-possession-transfer-time
+course_id: 41215
+module_id: module-02-property
+level: 3
+type: subjective
+status: ready
+title: "นับเวลาครอบครองปรปักษ์ต่อจากผู้โอน"
+source:
+  unit: "12-13"
+  file: "source-materials/raw/ชุดเก็งอัตนัย-41215 ละเมิด ทรัพย์สิน _2-2568.pdf"
+  pages: "40-41"
+  source_status: "answer_text_extracted_question_reconstructed"
+scenario: >
+  หนึ่งเข้าทำกินในที่ดินมีโฉนดของสองโดยเข้าใจว่าเป็นที่ดินรกร้างว่างเปล่าเป็นเวลา 4 ปี ต่อมาหนึ่งขายที่ดินนั้นให้สามโดยสามไม่ทราบความเป็นมา และสามทำกินต่ออีก 7 ปี
+question: "ให้วินิจฉัยว่าสามมีข้อต่อสู้ว่าได้กรรมสิทธิ์โดยครอบครองปรปักษ์หรือไม่ และนับเวลาครอบครองของหนึ่งรวมกับของสามได้หรือไม่"
+statutes: ["1382", "1385"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: "โฟกัสครอบครองปรปักษ์และการนับเวลาครอบครองต่อเนื่อง"
+  - level: 2
+    kind: key_elements
+    text: "ดูว่าเป็นการครอบครองทรัพย์ของผู้อื่นโดยสงบ เปิดเผย เจตนาเป็นเจ้าของ และมีการโอนการครอบครองหรือไม่"
+  - level: 3
+    kind: statute_number
+    text: "พิจารณามาตรา 1382 ประกอบมาตรา 1385"
+rubric_id: r-exam-prep-adverse-possession-transfer-time
+model_answer_id: a-exam-prep-adverse-possession-transfer-time

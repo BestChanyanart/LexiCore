@@ -1,0 +1,25 @@
+id: q-1402-habitation-registration
+course_id: 41215
+module_id: module-02-property
+level: 2
+type: subjective
+title: สิทธิอาศัยที่ยังไม่ได้จดทะเบียน
+source:
+  unit: 14
+  file: source-materials/raw/41215-14.pdf
+scenario: >
+  นาย ก. ทำหนังสือให้นาย ข. มีสิทธิอยู่อาศัยในบ้านของตนตลอดชีวิต แต่ยังไม่ได้จดทะเบียนต่อพนักงานเจ้าหน้าที่ ต่อมานาย ก. ขายบ้านให้นาย ค. นาย ข. ต้องการอ้างสิทธิอาศัยต่อ นาย ค.
+question: ให้วินิจฉัยผลของสิทธิอาศัยและประเด็นการจดทะเบียนต่อบุคคลภายนอก
+statutes: ["1299", "1402"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้เกี่ยวกับสิทธิอาศัยซึ่งเป็นทรัพยสิทธิเกี่ยวกับอสังหาริมทรัพย์
+  - level: 2
+    kind: key_elements
+    text: แยกผลระหว่างคู่กรณีกับผลต่อบุคคลภายนอกเมื่อยังไม่ได้จดทะเบียน
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 1402 ประกอบมาตรา 1299
+rubric_id: r-1402-habitation-registration
+

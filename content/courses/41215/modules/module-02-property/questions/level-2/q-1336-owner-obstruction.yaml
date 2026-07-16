@@ -1,0 +1,25 @@
+id: q-1336-owner-obstruction
+course_id: 41215
+module_id: module-02-property
+level: 2
+type: subjective
+title: เจ้าของขัดขวางผู้บุกรุก
+source:
+  unit: 9
+  file: source-materials/raw/41215-9.pdf
+scenario: >
+  นาย ก. เป็นเจ้าของที่ดิน นาย ข. นำวัสดุก่อสร้างมาวางในที่ดินของนาย ก. โดยไม่ได้รับอนุญาต นาย ก. ต้องการให้ขนย้ายออกและเรียกค่าเสียหายจากการใช้พื้นที่
+question: ให้วินิจฉัยว่านาย ก. มีอำนาจใดในฐานะเจ้าของกรรมสิทธิ์ และควรวิเคราะห์ประเด็นใดบ้าง
+statutes: ["1336", "420"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้เกี่ยวกับอำนาจเจ้าของกรรมสิทธิ์
+  - level: 2
+    kind: key_elements
+    text: มองหาอำนาจใช้สอย ติดตามเอาคืน และขัดขวางมิให้ผู้อื่นสอดเข้าเกี่ยวข้องโดยมิชอบ
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 1336 และอาจเชื่อมกับมาตรา 420 หากมีความเสียหาย
+rubric_id: r-1336-owner-obstruction
+

@@ -1,0 +1,25 @@
+id: q-438-compensation-restoration
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 2
+type: subjective
+title: ค่าสินไหมเพื่อเยียวยาความเสียหาย
+source:
+  unit: 4
+  file: source-materials/raw/41215-4.pdf
+scenario: >
+  นาย ก. ขับรถโดยประมาทชนร้านค้าของนาย ข. ทำให้กระจกหน้าร้านแตก สินค้าบางส่วนเสียหาย และร้านต้องปิดซ่อมสองวัน
+question: ให้วิเคราะห์แนวทางกำหนดค่าสินไหมทดแทนเพื่อละเมิด โดยเน้นเป้าหมายของการเยียวยา
+statutes: ["420", "438"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้ไม่ถามแค่ว่ามีละเมิดหรือไม่ แต่ถามการเยียวยาความเสียหาย
+  - level: 2
+    kind: key_elements
+    text: แยกความเสียหายต่อทรัพย์ ค่าใช้จ่ายในการซ่อม และผลจากการปิดร้าน
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 438 ประกอบฐานละเมิดตามมาตรา 420
+rubric_id: r-438-compensation-restoration
+

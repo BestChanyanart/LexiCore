@@ -1,0 +1,25 @@
+id: q-406-mistaken-payment
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 2
+type: subjective
+title: โอนเงินผิดบัญชี
+source:
+  unit: 5
+  file: source-materials/raw/41215-5.pdf
+scenario: >
+  นาย ก. ตั้งใจโอนเงินชำระหนี้ให้นาย ข. แต่กรอกเลขบัญชีผิดทำให้เงินเข้าบัญชีนาย ค. นาย ค. ทราบว่าเงินไม่ได้เป็นของตน แต่ยังนำเงินไปใช้
+question: ให้วินิจฉัยว่านาย ก. มีสิทธิเรียกคืนเงินจากนาย ค. บนฐานลาภมิควรได้หรือไม่
+statutes: ["406"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้เกี่ยวกับลาภมิควรได้ ไม่ใช่ละเมิดเป็นหลัก
+  - level: 2
+    kind: key_elements
+    text: มองหาการได้ประโยชน์ของนาย ค. การเสียเปรียบของนาย ก. และการไม่มีมูลกฎหมาย
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 406
+rubric_id: r-406-mistaken-payment
+

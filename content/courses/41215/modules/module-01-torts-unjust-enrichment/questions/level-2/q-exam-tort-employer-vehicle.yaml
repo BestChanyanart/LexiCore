@@ -1,0 +1,28 @@
+id: q-exam-tort-employer-vehicle
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 2
+type: subjective
+title: แนวเก็ง ลูกจ้างขับรถส่งของชนผู้เสียหาย
+source:
+  unit: exam-prep
+  file: source-materials/raw/ชุดเก็งอัตนัย-41215 ละเมิด ทรัพย์สิน _2-2568.pdf
+  note: สร้างจากหน่วยและมาตราเน้นในหน้าแรกของไฟล์เก็งข้อสอบ ไม่ใช่ OCR ข้อความโจทย์แบบคำต่อคำ
+scenario: >
+  บริษัทมอบหมายให้นาย ก. ลูกจ้าง ขับรถส่งสินค้า ระหว่างทางนาย ก. ขับรถโดยประมาทชนรถนาย ข. เสียหาย นาย ข. ต้องการเรียกค่าเสียหายจากนาย ก. และบริษัท
+question: >
+  ให้วินิจฉัยความรับผิดของนาย ก. และบริษัท โดยแยกฐานละเมิดของผู้ขับ ความรับผิดนายจ้าง และประเด็นยานพาหนะ
+statutes: ["420", "425", "437"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: หน่วยเก็งชี้ว่าหน่วย 1-3 ออกบ่อย ให้แยกฐานละเมิดของคนขับ นายจ้าง และยานพาหนะ
+  - level: 2
+    kind: key_elements
+    text: มองหาคำว่า ประมาท ลูกจ้าง ทางการที่จ้าง และผู้ครอบครองหรือควบคุมดูแลรถ
+  - level: 3
+    kind: statute_number
+    text: มาตราที่ควรเปิดดูคือ 420, 425 และ 437
+rubric_id: r-exam-tort-employer-vehicle
+model_answer_id: a-exam-tort-employer-vehicle
+

@@ -1,0 +1,7 @@
+id: 41215
+title: "กฎหมายแพ่ง: ละเมิดและทรัพย์สิน"
+code: "41215"
+description: ฝึกวินิจฉัยกฎหมายลักษณะละเมิด จัดการงานนอกสั่ง ลาภมิควรได้ และทรัพย์สิน
+modules:
+  - module-01-torts-unjust-enrichment
+  - module-02-property

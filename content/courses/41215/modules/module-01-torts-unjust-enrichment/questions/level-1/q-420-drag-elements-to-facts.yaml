@@ -1,0 +1,33 @@
+id: q-420-drag-elements-to-facts
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 1
+type: drag_drop
+title: จับคู่องค์ประกอบมาตรา 420 กับข้อเท็จจริง
+scenario: นาย ก. ยกแจกันโดยไม่ระวัง แจกันตกใส่นาย ข. จนบาดเจ็บ
+question: ลากข้อเท็จจริงไปจับคู่กับองค์ประกอบที่ถูกต้อง
+statutes: ["420"]
+drag_items:
+  - id: fact-1
+    text: ยกแจกันโดยไม่ระวัง
+  - id: fact-2
+    text: นาย ข. ได้รับบาดเจ็บ
+drop_zones:
+  - id: element-negligence
+    label: ประมาทเลินเล่อ
+  - id: element-damage
+    label: ความเสียหาย
+correct_mapping:
+  fact-1: element-negligence
+  fact-2: element-damage
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้ให้จับคู่ข้อเท็จจริงกับองค์ประกอบละเมิด
+  - level: 2
+    kind: key_elements
+    text: แยกพฤติกรรมของผู้กระทำออกจากผลเสียหาย
+  - level: 3
+    kind: statute_number
+    text: พิจารณาประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420
+

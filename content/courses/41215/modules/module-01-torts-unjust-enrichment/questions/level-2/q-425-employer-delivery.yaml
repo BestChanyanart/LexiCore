@@ -1,0 +1,22 @@
+id: q-425-employer-delivery
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 2
+type: subjective
+title: ลูกจ้างส่งของชนคนเดินถนน
+scenario: >
+  บริษัท จ้างนาย ก. เป็นพนักงานส่งของ ระหว่างนำสินค้าไปส่งให้ลูกค้าตามคำสั่งบริษัท นาย ก. ขับรถโดยประมาทชนคนเดินถนนได้รับบาดเจ็บ
+question: ให้วินิจฉัยว่าบริษัทต้องรับผิดในผลแห่งละเมิดของนาย ก. หรือไม่
+statutes: ["420", "425"]
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้เกี่ยวกับความรับผิดของนายจ้างในผลแห่งละเมิดของลูกจ้าง
+  - level: 2
+    kind: key_elements
+    text: ตรวจความสัมพันธ์นายจ้างลูกจ้าง การทำละเมิด และคำว่าในทางการที่จ้าง
+  - level: 3
+    kind: statute_number
+    text: พิจารณามาตรา 425 ประกอบฐานละเมิดตามมาตรา 420
+rubric_id: r-425-employer-scope
+

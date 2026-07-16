@@ -1,0 +1,38 @@
+id: q-property-types-drag
+course_id: 41215
+module_id: module-02-property
+level: 1
+type: drag_drop
+title: จับคู่ประเภทของทรัพย์
+scenario: จับคู่ตัวอย่างทรัพย์กับประเภททางกฎหมายที่เหมาะสม
+question: ลากตัวอย่างไปยังหมวดทรัพย์ที่ถูกต้อง
+statutes: []
+drag_items:
+  - id: item-land
+    text: ที่ดิน
+  - id: item-car
+    text: รถยนต์
+  - id: item-fruit
+    text: ผลไม้ที่เกิดจากต้นไม้
+drop_zones:
+  - id: immovable
+    label: อสังหาริมทรัพย์
+  - id: movable
+    label: สังหาริมทรัพย์
+  - id: fruit
+    label: ดอกผล
+correct_mapping:
+  item-land: immovable
+  item-car: movable
+  item-fruit: fruit
+hints:
+  - level: 1
+    kind: focus_area
+    text: โจทย์นี้ฝึกแยกประเภททรัพย์
+  - level: 2
+    kind: key_elements
+    text: ดูว่าทรัพย์นั้นเคลื่อนที่ได้หรือเกี่ยวกับที่ดินโดยสภาพ
+  - level: 3
+    kind: statute_number
+    text: ทบทวนหัวข้อประเภทของทรัพย์ ส่วนควบ อุปกรณ์ และดอกผล
+

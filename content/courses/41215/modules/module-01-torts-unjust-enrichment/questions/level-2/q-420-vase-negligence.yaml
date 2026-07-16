@@ -1,0 +1,32 @@
+id: q-420-vase-negligence
+course_id: 41215
+module_id: module-01-torts-unjust-enrichment
+level: 2
+type: subjective
+title: แจกันตกใส่ศีรษะผู้เสียหาย
+scenario: >
+  นาย ก. ยกแจกันหนักจากชั้นสองโดยไม่ตรวจดูให้มั่นคง แจกันหลุดมือตกใส่ศีรษะนาย ข. ซึ่งเดินอยู่ด้านล่างจนได้รับบาดเจ็บ
+question: ให้วินิจฉัยว่านาย ก. ต้องรับผิดต่อนาย ข. ตามกฎหมายลักษณะละเมิดหรือไม่
+statutes: ["420"]
+skills:
+  - issue_spotting
+  - element_matching
+  - irac_application
+hints:
+  - level: 1
+    kind: focus_area
+    text: ข้อเท็จจริงนี้เกี่ยวข้องกับความรับผิดเพื่อละเมิดจากการกระทำของตนเอง
+  - level: 2
+    kind: key_elements
+    text: มองหาองค์ประกอบเรื่องประมาทเลินเล่อ ความเสียหาย และเหตุสัมพันธ์ระหว่างการกระทำกับผล
+  - level: 3
+    kind: statute_number
+    text: ลองพิจารณาประมวลกฎหมายแพ่งและพาณิชย์ มาตรา 420
+rubric_id: r-420-basic
+scoring:
+  max_score: 10
+  hint_penalty:
+    hint_1: 1
+    hint_2: 2
+    hint_3: 3
+

@@ -1,0 +1,41 @@
+course_id: 41215
+course_code: "41215"
+title: "กฎหมายแพ่ง: ละเมิดและทรัพย์สิน"
+status: starter-content-map
+source_material_status: imported 15 chapter pdf files and 1 subjective exam-prep pdf
+source_materials:
+  raw_files:
+    - source-materials/raw/41215-1.pdf
+    - source-materials/raw/41215-2.pdf
+    - source-materials/raw/41215-3.pdf
+    - source-materials/raw/41215-4.pdf
+    - source-materials/raw/41215-5.pdf
+    - source-materials/raw/41215-6.pdf
+    - source-materials/raw/41215-7.pdf
+    - source-materials/raw/41215-8.pdf
+    - source-materials/raw/41215-9.pdf
+    - source-materials/raw/41215-10.pdf
+    - source-materials/raw/41215-11.pdf
+    - source-materials/raw/41215-12.pdf
+    - source-materials/raw/41215-13.pdf
+    - source-materials/raw/41215-14.pdf
+    - source-materials/raw/41215-15.pdf
+    - source-materials/raw/ชุดเก็งอัตนัย-41215 ละเมิด ทรัพย์สิน _2-2568.pdf
+modules:
+  - module_id: module-01-torts-unjust-enrichment
+    title: กฎหมายลักษณะละเมิด จัดการงานนอกสั่ง และลาภมิควรได้
+    important_statutes: ["420", "423", "425", "428", "429", "432", "433", "434", "437"]
+    starter_question_targets:
+      level_1: 4
+      level_2: 4
+      level_3: 1
+  - module_id: module-02-property
+    title: กฎหมายลักษณะทรัพย์สิน
+    important_statutes: ["1299", "1300", "1304", "1305", "1306", "1307", "1349", "1382", "1387"]
+    starter_question_targets:
+      level_1: 4
+      level_2: 4
+      level_3: 1
+notes:
+  - เนื้อหาชุดนี้เป็น starter content เพื่อวางโครงระบบ ไม่ใช่ถ้อยคำตัวบทฉบับทางการ
+  - มีไฟล์หนังสือต้นทางแล้ว ควรทำ outline รายบทและ review ความถูกต้องของ statute notes/questions/rubrics จาก PDF จริงอีกครั้ง

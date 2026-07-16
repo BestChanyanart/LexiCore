@@ -1,0 +1,21 @@
+id: module-02-property
+title: กฎหมายลักษณะทรัพย์สิน
+topics:
+  - id: property-types
+    title: ประเภทของทรัพย์สิน
+    statutes: []
+  - id: public-property
+    title: ทรัพย์สินของแผ่นดิน
+    statutes: ["1304", "1305", "1306", "1307"]
+  - id: acquisition-of-real-rights
+    title: การได้มาซึ่งทรัพยสิทธิและกรรมสิทธิ์
+    statutes: ["1299", "1300", "1382"]
+  - id: ownership-and-co-ownership
+    title: กรรมสิทธิ์และกรรมสิทธิ์รวม
+    statutes: ["1336", "1356", "1360", "1364"]
+  - id: limits-on-ownership
+    title: ข้อจำกัดสิทธิของเจ้าของอสังหาริมทรัพย์
+    statutes: ["1349"]
+  - id: other-real-rights
+    title: ทรัพยสิทธิอื่น
+    statutes: ["1387", "1402", "1410", "1417"]
