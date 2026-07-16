@@ -1372,6 +1372,49 @@
         return hiddenLabels.reduce((cleaned, hidden) => cleaned.split(hidden).join("คำถาม"), label);
       }
 
+      function compactLevelOneTitle(row, module, statutes) {
+        const itemNumber = String(row["ข้อที่"] || "").trim();
+        if (itemNumber) {
+          return `ข้อ ${itemNumber}`;
+        }
+
+        const question = String(row["คำถาม (Question)"] || "").trim();
+        const rawTitle = String(row.title || "").trim();
+        const normalizedQuestion = question.replace(/\s+/g, "");
+        const normalizedTitle = rawTitle.replace(/\s+/g, "");
+        const titleRepeatsQuestion = normalizedTitle && (
+          normalizedTitle === normalizedQuestion ||
+          normalizedQuestion.startsWith(normalizedTitle) ||
+          normalizedTitle.startsWith(normalizedQuestion)
+        );
+        const shouldCompact = !rawTitle || titleRepeatsQuestion || rawTitle.length > 34;
+        if (!shouldCompact) {
+          return rawTitle;
+        }
+
+        const compacted = (rawTitle || question)
+          .replace(/^\s*(ข้อใด|ข้อความใด|สถานการณ์ใด|กรณีใด|การกระทำใด)\s*(เป็น|มิใช่|ไม่ใช่|กล่าวถูกต้อง|กล่าวไม่ถูกต้อง|ควร|สามารถ)?\s*/u, "")
+          .replace(/^\s*(ให้นักเรียน|ให้)\s*(วินิจฉัย|เลือก|จับคู่|ลาก)?\s*/u, "")
+          .replace(/\s+/g, " ")
+          .trim()
+          .replace(/[?？]+$/u, "");
+        const parenthetical = compacted.match(/\(([^)]+)\)/);
+        if (parenthetical?.[1] && parenthetical[1].length <= 34) {
+          return parenthetical[1].trim();
+        }
+
+        if (compacted && compacted.length <= 34) {
+          return compacted;
+        }
+        if (compacted) {
+          return `${compacted.slice(0, 33).trim()}...`;
+        }
+        if (statutes.length) {
+          return `มาตรา ${statutes.join(", ")}`;
+        }
+        return module;
+      }
+
       function parseChoiceText(choiceText) {
         const choices = [];
         const lines = String(choiceText || "").replace(/\\n/g, "\n").split("\n").map(line => line.trim()).filter(Boolean);
@@ -1439,14 +1482,16 @@
       function levelOneRowToQuestion(row) {
         const format = String(row["รูปแบบโจทย์"] || "").toLowerCase();
         const explanation = row["คำอธิบายเหตุผล (Explanation)"] || "ดูคำอธิบายประกอบเฉลย";
+        const statutes = normalizeStatutes(row["มาตราที่เกี่ยวข้อง (Sections)"]);
+        const module = moduleLabel(row.module_id);
         const base = {
           id: row.question_id,
           courseId: row.course_id || DEFAULT_COURSE_ID,
-          title: row.title || row["คำถาม (Question)"],
+          title: compactLevelOneTitle(row, module, statutes),
           level: Number(row.level || 1),
-          module: moduleLabel(row.module_id),
+          module,
           source: "คำถาม",
-          statutes: normalizeStatutes(row["มาตราที่เกี่ยวข้อง (Sections)"]),
+          statutes,
           scenario: row.source_kind === "existing_level_1_yaml" ? row["คำถาม (Question)"] : "",
           question: row.source_kind === "existing_level_1_yaml" ? "เลือกคำตอบที่ถูกต้อง" : row["คำถาม (Question)"],
           hints: [row.hint_1, row.hint_2, row.hint_3].filter(Boolean)
