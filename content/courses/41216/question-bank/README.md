@@ -9,11 +9,19 @@
 
 ## Update Flow
 
-1. แก้ CSV ที่เกี่ยวข้อง
+1. แก้ CSV ที่เกี่ยวข้อง หรือวางไฟล์ export จากหน้าเว็บไว้ใน `imports/*.csv`
 2. ใช้ `question_id` ที่ไม่ซ้ำ
 3. ตั้ง `status=ready` เฉพาะข้อที่ตรวจแล้ว
 4. รัน `node scripts/build-writing-question-table-data.mjs`
 5. เปิด `docs/trial-practice.html` เพื่อตรวจคำถาม
+
+สำหรับโจทย์ที่ export จากหน้าเว็บ ให้เก็บแยกเป็น batch เช่น:
+
+```text
+content/courses/41216/question-bank/imports/2026-07-16-extra-drafts.csv
+```
+
+script จะรวม `writing-question-table-41216.csv` กับ `imports/*.csv` โดยอัตโนมัติ จึงไม่ต้อง paste แถวเข้าไฟล์หลัก
 
 ## Templates
 

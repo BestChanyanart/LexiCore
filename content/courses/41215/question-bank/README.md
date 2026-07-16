@@ -10,7 +10,7 @@
 
 ## วิธีเพิ่ม/แก้ข้อสอบ
 
-1. เพิ่มแถวใน CSV ที่เหมาะสม
+1. เพิ่มแถวใน CSV ที่เหมาะสม หรือวางไฟล์ export จากหน้าเว็บไว้ใน `imports/*.csv`
 2. ใส่ `question_id` ที่ไม่ซ้ำ แล้วเติม `level`, `module`, `source`, `statutes`, `title`, `scenario`, `question`, `model_answer`, `answer_steps`, และ hint ให้ครบตามชนิดคำถาม
 3. ถ้าต้องการซ่อนข้อชั่วคราว ให้ตั้ง `status=archived`
 4. ถ้าข้อมาจากไฟล์เก็งแต่ยังอ่าน/เรียบเรียงไม่ครบ ให้เก็บไว้ใน backlog และตั้ง `status=needs_manual_review`
@@ -28,6 +28,14 @@ node scripts/build-writing-question-table-data.mjs
 ```
 
 หน้าเว็บจะแสดงเฉพาะแถวที่ตั้ง `status=ready` เท่านั้น
+
+สำหรับโจทย์ที่ export จากหน้าเว็บ ให้เก็บแยกเป็น batch เช่น:
+
+```text
+content/courses/41215/question-bank/imports/2026-07-16-extra-drafts.csv
+```
+
+script จะรวม `writing-question-table-41215.csv` กับ `imports/*.csv` โดยอัตโนมัติ จึงไม่ต้อง paste แถวเข้าไฟล์หลัก
 
 ## โครงสร้างคอลัมน์สำคัญในตารางพร้อมใช้
 

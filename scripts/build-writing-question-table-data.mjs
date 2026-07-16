@@ -8,6 +8,7 @@ const courses = [
     code: "41215",
     globalName: "LEXICORE_WRITING_QUESTIONS_41215",
     csvPath: "content/courses/41215/question-bank/writing-question-table-41215.csv",
+    importDirPath: "content/courses/41215/question-bank/imports",
     statuteCsvPath: "content/courses/41215/source-materials/civil-law-sections-short-title.csv",
     statuteGlobalName: "LEXICORE_STATUTES_41215",
     extraTables: [
@@ -21,6 +22,7 @@ const courses = [
     code: "41216",
     globalName: "LEXICORE_WRITING_QUESTIONS_41216",
     csvPath: "content/courses/41216/question-bank/writing-question-table-41216.csv",
+    importDirPath: "content/courses/41216/question-bank/imports",
     statuteCsvPath: "content/courses/41216/source-materials/criminal-code-sections-short-title.csv",
     statuteGlobalName: "LEXICORE_STATUTES_41216",
     extraTables: [
@@ -84,6 +86,35 @@ async function loadRows(csvPath) {
   );
 }
 
+async function listCsvFiles(dirPath) {
+  const absolutePath = path.join(repoRoot, dirPath);
+  let entries;
+  try {
+    entries = await fs.readdir(absolutePath, { withFileTypes: true });
+  } catch (error) {
+    if (error?.code === "ENOENT") {
+      return [];
+    }
+    throw new Error(`Unable to read import directory: ${dirPath}`, { cause: error });
+  }
+  return entries
+    .filter((entry) => entry.isFile() && entry.name.toLowerCase().endsWith(".csv"))
+    .map((entry) => path.posix.join(dirPath, entry.name))
+    .sort((a, b) => a.localeCompare(b));
+}
+
+async function loadRowsWithImports(csvPath, importDirPath) {
+  const rows = await loadRows(csvPath);
+  const importCsvPaths = importDirPath ? await listCsvFiles(importDirPath) : [];
+  const importRowsByPath = [];
+  for (const importCsvPath of importCsvPaths) {
+    const importRows = await loadRows(importCsvPath);
+    importRowsByPath.push({ csvPath: importCsvPath, rows: importRows });
+    rows.push(...importRows);
+  }
+  return { rows, importRowsByPath };
+}
+
 function splitList(value, delimiter) {
   return String(value || "")
     .split(delimiter)
@@ -138,11 +169,19 @@ window.${course.statuteGlobalName} = ${JSON.stringify(statuteRows, null, 2)};`);
     console.log(`${course.code} statute rows=${statuteRows.length}`);
   }
 
-  const rows = await loadRows(course.csvPath);
+  const { rows, importRowsByPath } = await loadRowsWithImports(course.csvPath, course.importDirPath);
   const data = rows.map(rowToWebsiteData);
-  blocks.push(`// Generated from ${course.csvPath}
+  const sourceComment = [
+    course.csvPath,
+    ...importRowsByPath.map((importTable) => importTable.csvPath),
+  ].join(", ");
+  const importRowCount = importRowsByPath.reduce((total, table) => total + table.rows.length, 0);
+  blocks.push(`// Generated from ${sourceComment}
 window.${course.globalName} = ${JSON.stringify(data, null, 2)};`);
-  console.log(`${course.code} writing question rows=${data.length}`);
+  console.log(`${course.code} writing question rows=${data.length} base=${rows.length - importRowCount} imports=${importRowCount}`);
+  for (const importTable of importRowsByPath) {
+    console.log(`${course.code} import rows ${importTable.csvPath}=${importTable.rows.length}`);
+  }
 
   for (const table of course.extraTables || []) {
     const extraRows = await loadRows(table.csvPath);

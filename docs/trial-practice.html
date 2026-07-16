@@ -116,6 +116,120 @@
         background: #fffefe;
       }
 
+      .authoring-box {
+        border-bottom: 1px solid var(--line);
+        background: #fffafe;
+      }
+
+      .authoring-box summary {
+        cursor: pointer;
+        padding: 12px 16px;
+        color: #4b376f;
+        font-weight: 700;
+      }
+
+      .authoring-form {
+        display: grid;
+        gap: 10px;
+        padding: 0 12px 14px;
+      }
+
+      .author-field {
+        display: grid;
+        gap: 4px;
+      }
+
+      .author-field label {
+        color: #5d536f;
+        font-size: 0.86rem;
+        font-weight: 600;
+      }
+
+      .author-field input,
+      .author-field select,
+      .author-field textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px 10px;
+        background: #fffbff;
+        color: var(--ink);
+        font: inherit;
+      }
+
+      .author-field textarea {
+        min-height: 76px;
+        resize: vertical;
+      }
+
+      .author-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .author-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+
+      .author-actions .primary {
+        grid-column: 1 / -1;
+      }
+
+      .statute-picker {
+        display: grid;
+        gap: 8px;
+      }
+
+      .statute-picker-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 88px 88px;
+        gap: 8px;
+      }
+
+      .statute-custom-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 8px;
+      }
+
+      .selected-statutes {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        min-height: 31px;
+        align-items: center;
+      }
+
+      .statute-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        border: 1px solid #d9c8ff;
+        border-radius: 999px;
+        background: #f4eeff;
+        color: #3f315f;
+        padding: 4px 8px;
+        font-size: 0.82rem;
+      }
+
+      .statute-chip button {
+        min-width: auto;
+        border: 0;
+        background: transparent;
+        color: #6d48b3;
+        padding: 0;
+        line-height: 1;
+      }
+
+      .author-status {
+        min-height: 1.4em;
+        color: var(--muted);
+        font-size: 0.82rem;
+      }
+
       .practice-search {
         width: 100%;
         border: 1px solid var(--line);
@@ -578,6 +692,22 @@
         margin-bottom: 0;
       }
 
+      .model-answer-section {
+        display: grid;
+        gap: 6px;
+        margin: 0 0 14px;
+      }
+
+      .model-answer-section:last-child {
+        margin-bottom: 0;
+      }
+
+      .model-answer-section h4 {
+        margin: 0;
+        font-size: 0.96rem;
+        color: #5a3d91;
+      }
+
       .model-paragraph mark {
         background: #efe6ff;
         color: #5a3d91;
@@ -710,7 +840,11 @@
         }
 
         .level-tabs,
-        .status-filters {
+        .status-filters,
+        .author-grid,
+        .author-actions,
+        .statute-picker-row,
+        .statute-custom-row {
           grid-template-columns: 1fr;
         }
       }
@@ -739,6 +873,103 @@
             <button class="status-filter" data-status-filter="done" type="button">ทำแล้ว</button>
           </div>
         </div>
+        <details class="authoring-box" id="authoringBox">
+          <summary>เพิ่มโจทย์เอง</summary>
+          <form class="authoring-form" id="authoringForm">
+            <div class="author-grid">
+              <div class="author-field">
+                <label for="authorCourse">วิชา</label>
+                <select id="authorCourse" name="course_id"></select>
+              </div>
+              <div class="author-field">
+                <label for="authorLevel">Level</label>
+                <select id="authorLevel" name="level">
+                  <option value="1">Level 1</option>
+                  <option value="2" selected>Level 2</option>
+                  <option value="3">Level 3</option>
+                </select>
+              </div>
+            </div>
+            <div class="author-field">
+              <label for="authorTitle">Heading / ชื่อข้อ</label>
+              <input id="authorTitle" name="title" type="text" placeholder="เว้นว่างได้ ระบบจะตั้งจากมาตรา" />
+            </div>
+            <div class="author-grid">
+              <div class="author-field">
+                <label for="authorModule">หมวด</label>
+                <input id="authorModule" name="module" type="text" placeholder="เช่น ละเมิด" />
+              </div>
+              <div class="author-field">
+                <label for="authorSource">ที่มา</label>
+                <input id="authorSource" name="source" type="text" placeholder="เพิ่มเอง" />
+              </div>
+            </div>
+            <div class="author-field">
+              <label for="authorStatutes">เลขมาตรา</label>
+              <input id="authorStatutes" name="statutes" type="hidden" />
+              <div class="statute-picker">
+                <div class="statute-picker-row">
+                  <select id="authorStatuteSelect"></select>
+                  <select id="authorParagraphSelect" aria-label="วรรค">
+                    <option value="">ไม่ระบุวรรค</option>
+                    <option value="วรรค 1">วรรค 1</option>
+                    <option value="วรรค 2">วรรค 2</option>
+                    <option value="วรรค 3">วรรค 3</option>
+                    <option value="วรรค 4">วรรค 4</option>
+                    <option value="วรรค 5">วรรค 5</option>
+                    <option value="วรรค 6">วรรค 6</option>
+                    <option value="วรรค 7">วรรค 7</option>
+                    <option value="วรรค 8">วรรค 8</option>
+                    <option value="วรรค 9">วรรค 9</option>
+                    <option value="วรรค 10">วรรค 10</option>
+                  </select>
+                  <select id="authorItemSelect" aria-label="อนุ">
+                    <option value="">ไม่ระบุอนุ</option>
+                    <option value="(1)">(1)</option>
+                    <option value="(2)">(2)</option>
+                    <option value="(3)">(3)</option>
+                    <option value="(4)">(4)</option>
+                    <option value="(5)">(5)</option>
+                    <option value="(6)">(6)</option>
+                    <option value="(7)">(7)</option>
+                    <option value="(8)">(8)</option>
+                    <option value="(9)">(9)</option>
+                    <option value="(10)">(10)</option>
+                  </select>
+                </div>
+                <button id="addSelectedStatuteBtn" type="button">เพิ่มมาตราที่เลือก</button>
+                <div class="statute-custom-row">
+                  <input id="authorCustomStatute" type="text" placeholder="หรือพิมพ์เอง เช่น 59 วรรค 4" />
+                  <button id="addCustomStatuteBtn" type="button">เพิ่มเอง</button>
+                </div>
+                <div class="selected-statutes" id="selectedStatutes"></div>
+              </div>
+            </div>
+            <div class="author-field">
+              <label for="authorScenario">ข้อเท็จจริง / โจทย์</label>
+              <textarea id="authorScenario" name="scenario" required></textarea>
+            </div>
+            <div class="author-field">
+              <label for="authorQuestion">คำถาม</label>
+              <textarea id="authorQuestion" name="question" required></textarea>
+            </div>
+            <div class="author-field">
+              <label for="authorAnswer">เฉลย</label>
+              <textarea id="authorAnswer" name="model_answer" required></textarea>
+            </div>
+            <div class="author-field">
+              <label for="authorHints">Hint เอง ถ้ามี</label>
+              <textarea id="authorHints" name="hints" placeholder="ใส่บรรทัดละ 1 hint หรือเว้นว่างให้ระบบสร้างจากมาตรา"></textarea>
+            </div>
+            <div class="author-actions">
+              <button class="primary" id="authorSubmitBtn" type="submit">เพิ่มและ preview</button>
+              <button id="newDraftBtn" type="button">เริ่มข้อใหม่</button>
+              <button id="exportCsvBtn" type="button">Export CSV แยกวิชา</button>
+              <button id="exportJsonBtn" type="button">Export JSON</button>
+            </div>
+            <div class="author-status" id="authorStatus"></div>
+          </form>
+        </details>
         <div class="question-list" id="questionList"></div>
       </aside>
 
@@ -852,11 +1083,19 @@
       function statuteEntry(statute, courseId) {
         const courseEntries = generatedStatuteNotesByCourse[courseId] || {};
         const key = statuteKey(statute);
-        return courseEntries[key] || statuteNotes[key];
+        const generatedEntry = courseEntries[key];
+        if (generatedEntry && !isPlaceholderStatuteText(generatedEntry.text)) {
+          return generatedEntry;
+        }
+        return statuteNotes[key] || generatedEntry;
       }
 
       function statuteKey(statute) {
         return String(statute || "").match(/\d{1,4}/)?.[0] || String(statute || "").trim();
+      }
+
+      function isPlaceholderStatuteText(text) {
+        return /^เนื้อหาตามประมวลกฎหมาย/u.test(String(text || "").trim());
       }
 
       function statuteButtonText(statute) {
@@ -899,6 +1138,7 @@
 
       function splitStatuteParagraphs(content) {
         return String(content || "")
+          .replace(/\s+(ถ้ามีผู้ได้มาซึ่งอสังหาริมทรัพย์หรือทรัพยสิทธิอันเกี่ยวกับอสังหาริมทรัพย์โดยทางอื่นนอกจากนิติกรรม)/gu, "\n$1")
           .replace(/\s+(กระทำโดยเจตนา ได้แก่)/gu, "\n$1")
           .replace(/\s+(ถ้าผู้กระทำมิได้รู้ข้อเท็จจริง)/gu, "\n$1")
           .replace(/\s+(กระทำโดยประมาท ได้แก่)/gu, "\n$1")
@@ -935,6 +1175,26 @@
       }
 
       const DEFAULT_COURSE_ID = "41215";
+      const authoringStorageKey = "lexicore_author_questions_v1";
+      const authoringCsvColumns = [
+        "question_id",
+        "status",
+        "course_id",
+        "level",
+        "module",
+        "source",
+        "statutes",
+        "title",
+        "scenario",
+        "question",
+        "model_answer",
+        "answer_steps",
+        "hint_1",
+        "hint_2",
+        "hint_3",
+        "criteria",
+        "source_note"
+      ];
       const courseCatalog = [
         {
           id: "41215",
@@ -1335,6 +1595,8 @@
           hints: [row.hint_1, row.hint_2, row.hint_3].filter(Boolean),
           modelAnswer: {
             source: cleanSourceLabel(row.source_note || source),
+            courseId: row.course_id || DEFAULT_COURSE_ID,
+            statutes,
             paragraph: row.model_answer.replace(/(มาตรา\s*\d+)/g, "<mark>$1</mark>"),
             highlights: [
               { type: "issue", text: `ประเด็น: ${row.title}` },
@@ -1373,7 +1635,7 @@
       }
 
       function compactLevelOneTitle(row, module, statutes) {
-        const itemNumber = String(row["ข้อที่"] || "").trim();
+        const itemNumber = String(row.display_number || row["ข้อที่"] || "").trim();
         if (itemNumber) {
           return `ข้อ ${itemNumber}`;
         }
@@ -1554,6 +1816,7 @@
       const levelOneQuestions = courseCatalog.flatMap(course =>
         (window[course.levelOneGlobal] || [])
           .map(row => ({ ...row, course_id: row.course_id || course.id }))
+          .map((row, index) => ({ ...row, display_number: index + 1 }))
           .map(levelOneRowToQuestion)
       );
 
@@ -1566,6 +1829,10 @@
         }
         questions.unshift(...levelOneQuestions);
       }
+
+      let authorRows = loadAuthorRows();
+      const authorQuestions = authorRows.map(authorRowToQuestion);
+      questions.push(...authorQuestions);
 
       questions.forEach(question => {
         question.courseId = question.courseId || DEFAULT_COURSE_ID;
@@ -1591,9 +1858,184 @@
       const levelTabs = document.getElementById("levelTabs");
       const questionSearch = document.getElementById("questionSearch");
       const statusFilters = document.getElementById("statusFilters");
+      const authoringForm = document.getElementById("authoringForm");
+      const authorCourse = document.getElementById("authorCourse");
+      const authorLevel = document.getElementById("authorLevel");
+      const authorStatutes = document.getElementById("authorStatutes");
+      const authorStatuteSelect = document.getElementById("authorStatuteSelect");
+      const authorParagraphSelect = document.getElementById("authorParagraphSelect");
+      const authorItemSelect = document.getElementById("authorItemSelect");
+      const authorCustomStatute = document.getElementById("authorCustomStatute");
+      const addSelectedStatuteBtn = document.getElementById("addSelectedStatuteBtn");
+      const addCustomStatuteBtn = document.getElementById("addCustomStatuteBtn");
+      const selectedStatutes = document.getElementById("selectedStatutes");
+      const authorSubmitBtn = document.getElementById("authorSubmitBtn");
+      const newDraftBtn = document.getElementById("newDraftBtn");
+      const authorStatus = document.getElementById("authorStatus");
+      const exportCsvBtn = document.getElementById("exportCsvBtn");
+      const exportJsonBtn = document.getElementById("exportJsonBtn");
       const panel = document.getElementById("practicePanel");
       const summary = document.getElementById("summary");
       const fontSizes = ["0.92rem", "1rem", "1.12rem", "1.24rem"];
+      let selectedAuthorStatutes = [];
+      let editingAuthorId = null;
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function splitAuthorList(value, delimiter = ",") {
+        return String(value || "")
+          .split(delimiter)
+          .map(item => item.trim())
+          .filter(Boolean);
+      }
+
+      function normalizeAuthorStatutes(value) {
+        return [...new Set(String(value || "")
+          .replace(/มาตรา/gu, "")
+          .replace(/ม\./gu, "")
+          .split(/[,\n;]+/)
+          .map(item => item.trim())
+          .filter(Boolean))];
+      }
+
+      function statuteSortValue(value) {
+        return Number(statuteKey(value)) || Number.MAX_SAFE_INTEGER;
+      }
+
+      function availableStatuteEntries(courseId) {
+        const courseEntries = generatedStatuteNotesByCourse[courseId] || {};
+        return Object.entries(courseEntries)
+          .filter(([, entry]) => entry && !isPlaceholderStatuteText(entry.text))
+          .sort(([a], [b]) => statuteSortValue(a) - statuteSortValue(b));
+      }
+
+      function renderAuthorStatuteOptions(courseId) {
+        const entries = availableStatuteEntries(courseId);
+        authorStatuteSelect.innerHTML = entries.length
+          ? entries.map(([section, entry]) => (
+            `<option value="${escapeHtml(section)}">ม.${escapeHtml(section)}${entry.title ? ` - ${escapeHtml(entry.title)}` : ""}</option>`
+          )).join("")
+          : `<option value="">ไม่มีรายการมาตราในวิชานี้</option>`;
+      }
+
+      function syncSelectedAuthorStatutes() {
+        authorStatutes.value = selectedAuthorStatutes.join(", ");
+        selectedStatutes.innerHTML = selectedAuthorStatutes.length
+          ? selectedAuthorStatutes.map((statute, index) => `
+            <span class="statute-chip">
+              ม.${escapeHtml(statute)}
+              <button type="button" data-remove-statute="${index}" aria-label="ลบมาตรา ${escapeHtml(statute)}">×</button>
+            </span>
+          `).join("")
+          : `<span class="small">ยังไม่ได้เลือกมาตรา</span>`;
+        selectedStatutes.querySelectorAll("[data-remove-statute]").forEach(button => {
+          button.addEventListener("click", () => {
+            selectedAuthorStatutes.splice(Number(button.dataset.removeStatute), 1);
+            syncSelectedAuthorStatutes();
+          });
+        });
+      }
+
+      function addAuthorStatute(rawValue) {
+        const value = String(rawValue || "").replace(/^มาตรา\s*/u, "").trim();
+        if (!value || selectedAuthorStatutes.includes(value)) return;
+        selectedAuthorStatutes.push(value);
+        syncSelectedAuthorStatutes();
+      }
+
+      function selectedStatuteValue() {
+        return [
+          authorStatuteSelect.value,
+          authorParagraphSelect.value,
+          authorItemSelect.value
+        ].filter(Boolean).join(" ");
+      }
+
+      function loadAuthorRows() {
+        try {
+          const parsed = JSON.parse(localStorage.getItem(authoringStorageKey) || "[]");
+          return Array.isArray(parsed) ? parsed : [];
+        } catch (error) {
+          return [];
+        }
+      }
+
+      function saveAuthorRows() {
+        try {
+          localStorage.setItem(authoringStorageKey, JSON.stringify(authorRows));
+        } catch (error) {
+          updateAuthorStatus("บันทึก draft ใน browser ไม่สำเร็จ แต่ยัง preview ได้ในรอบนี้");
+        }
+      }
+
+      function draftCsvRowToWebsiteRow(row) {
+        const safe = Object.fromEntries(Object.entries(row).map(([key, value]) => [key, escapeHtml(value)]));
+        const statutes = normalizeAuthorStatutes(row.statutes);
+        return {
+          question_id: safe.question_id || nextAuthorQuestionId(row.course_id || DEFAULT_COURSE_ID, row.level || 2),
+          status: row.status || "draft",
+          course_id: row.course_id || DEFAULT_COURSE_ID,
+          level: Number(row.level) || 2,
+          module: safe.module || "เพิ่มเอง",
+          source: safe.source || "เพิ่มเอง",
+          statutes,
+          title: safe.title || defaultAuthorTitle(row.course_id || DEFAULT_COURSE_ID, statutes, safe.module),
+          scenario: safe.scenario || "",
+          question: safe.question || "",
+          model_answer: safe.model_answer || "",
+          answer_steps: splitAuthorList(safe.answer_steps, "|"),
+          hint_1: safe.hint_1,
+          hint_2: safe.hint_2,
+          hint_3: safe.hint_3,
+          criteria: safe.criteria || "",
+          source_note: safe.source_note || safe.source || "เพิ่มเอง"
+        };
+      }
+
+      function authorRowToQuestion(row) {
+        return {
+          ...tableRowToQuestion(draftCsvRowToWebsiteRow(row)),
+          authorDraft: true
+        };
+      }
+
+      function defaultAuthorTitle(courseId, statutes, moduleName) {
+        const statuteNames = statutes
+          .map(statute => {
+            const entry = statuteEntry(statute, courseId);
+            return entry?.title ? `ม.${statute} ${entry.title}` : `ม.${statute}`;
+          })
+          .join(" / ");
+        if (statuteNames) return statuteNames;
+        return moduleName ? `โจทย์ฝึกเขียน: ${moduleName}` : "โจทย์ฝึกเขียนเพิ่มเอง";
+      }
+
+      function autoHintsForAuthorRow(row) {
+        const courseId = row.course_id || DEFAULT_COURSE_ID;
+        const statutes = normalizeAuthorStatutes(row.statutes);
+        const statuteTitles = statutes
+          .map(statute => {
+            const entry = statuteEntry(statute, courseId);
+            return entry?.title ? `ม.${statute} ${entry.title}` : `ม.${statute}`;
+          })
+          .join(", ");
+        return [
+          row.module ? `เริ่มจากแยกประเด็นในหมวด ${row.module}` : "เริ่มจากแยกประเด็นข้อกฎหมายหลักในโจทย์",
+          statuteTitles ? `หลักที่ควรนึกถึงคือ ${statuteTitles}` : "ดูว่าข้อเท็จจริงเข้าองค์ประกอบกฎหมายใด",
+          statutes.length ? `พิจารณามาตรา ${statutes.join(", ")}` : "ระบุมาตราที่เกี่ยวข้องก่อนปรับบท"
+        ];
+      }
+
+      function nextAuthorQuestionId(courseId, level) {
+        return `custom-${courseId}-l${level}-${Date.now().toString(36)}`;
+      }
 
       function loadProgress() {
         try {
@@ -1609,6 +2051,12 @@
         } catch (error) {
           // Ignore storage failures in local file mode.
         }
+      }
+
+      function updateAuthorStatus(message) {
+        if (!authorStatus) return;
+        const count = authorRows.length;
+        authorStatus.textContent = message || `${count} draft${count === 1 ? "" : "s"} พร้อม export`;
       }
 
       function markCompleted(questionId) {
@@ -1670,6 +2118,7 @@
       }
 
       function bindTools() {
+        bindAuthoringTools();
         questionSearch.addEventListener("input", () => {
           state.search = questionSearch.value;
           state.index = 0;
@@ -1684,6 +2133,262 @@
             render();
           });
         });
+      }
+
+      function bindAuthoringTools() {
+        authorCourse.innerHTML = courseCatalog.map(course => (
+          `<option value="${course.id}">${course.code} ${course.title}</option>`
+        )).join("");
+        authorCourse.value = state.courseId;
+        authorLevel.value = String(state.level || 2);
+        renderAuthorStatuteOptions(authorCourse.value);
+        syncSelectedAuthorStatutes();
+        updateAuthorStatus();
+
+        authorCourse.addEventListener("change", () => {
+          renderAuthorStatuteOptions(authorCourse.value);
+        });
+
+        addSelectedStatuteBtn.addEventListener("click", () => {
+          addAuthorStatute(selectedStatuteValue());
+        });
+
+        addCustomStatuteBtn.addEventListener("click", () => {
+          addAuthorStatute(authorCustomStatute.value);
+          authorCustomStatute.value = "";
+        });
+
+        authorCustomStatute.addEventListener("keydown", event => {
+          if (event.key !== "Enter") return;
+          event.preventDefault();
+          addCustomStatuteBtn.click();
+        });
+
+        authoringForm.addEventListener("submit", event => {
+          event.preventDefault();
+          const formData = new FormData(authoringForm);
+          const courseId = String(formData.get("course_id") || DEFAULT_COURSE_ID);
+          const level = Number(formData.get("level") || 2);
+          const statutes = normalizeAuthorStatutes(authorStatutes.value);
+          if (!statutes.length) {
+            updateAuthorStatus("เลือกหรือเพิ่มเลขมาตราก่อน preview");
+            return;
+          }
+          const moduleName = String(formData.get("module") || "").trim();
+          const source = String(formData.get("source") || "").trim() || "เพิ่มเอง";
+          const hintLines = String(formData.get("hints") || "")
+            .split(/\n+/)
+            .map(line => line.trim())
+            .filter(Boolean);
+          const baseRow = {
+            question_id: editingAuthorId || nextAuthorQuestionId(courseId, level),
+            status: "ready",
+            course_id: courseId,
+            level: String(level),
+            module: moduleName || "เพิ่มเอง",
+            source,
+            statutes: statutes.join(", "),
+            title: String(formData.get("title") || "").trim() || defaultAuthorTitle(courseId, statutes, moduleName),
+            scenario: String(formData.get("scenario") || "").trim(),
+            question: String(formData.get("question") || "").trim(),
+            model_answer: String(formData.get("model_answer") || "").trim(),
+            answer_steps: "ประเด็น | หลักกฎหมาย | ปรับบท | สรุป",
+            hint_1: hintLines[0] || "",
+            hint_2: hintLines[1] || "",
+            hint_3: hintLines[2] || "",
+            criteria: "",
+            source_note: source
+          };
+          const generatedHints = autoHintsForAuthorRow(baseRow);
+          baseRow.hint_1 ||= generatedHints[0];
+          baseRow.hint_2 ||= generatedHints[1];
+          baseRow.hint_3 ||= generatedHints[2];
+
+          const rowIndex = authorRows.findIndex(row => row.question_id === baseRow.question_id);
+          if (rowIndex >= 0) {
+            authorRows[rowIndex] = baseRow;
+          } else {
+            authorRows.push(baseRow);
+          }
+          saveAuthorRows();
+          const question = authorRowToQuestion(baseRow);
+          const questionIndex = questions.findIndex(item => item.id === question.id);
+          if (questionIndex >= 0) {
+            questions[questionIndex] = question;
+          } else {
+            questions.push(question);
+          }
+          editingAuthorId = baseRow.question_id;
+          state.courseId = courseId;
+          state.level = level;
+          state.statusFilter = "all";
+          state.search = "";
+          questionSearch.value = "";
+          state.index = Math.max(visibleQuestions().findIndex(item => item.id === question.id), 0);
+          resetQuestionState();
+          authorCourse.value = courseId;
+          authorLevel.value = String(level);
+          renderAuthorStatuteOptions(courseId);
+          syncSelectedAuthorStatutes();
+          authorSubmitBtn.textContent = "บันทึกและ preview";
+          updateAuthorStatus(rowIndex >= 0 ? "บันทึก draft แล้ว และเปิด preview ให้ทันที" : "เพิ่มโจทย์แล้ว ฟอร์มยังค้างไว้ให้แก้ต่อได้");
+          render();
+        });
+
+        exportCsvBtn.addEventListener("click", () => {
+          exportAuthorRowsAsCsv();
+        });
+
+        exportJsonBtn.addEventListener("click", () => {
+          exportAuthorRowsAsJson();
+        });
+
+        newDraftBtn.addEventListener("click", () => {
+          startNewAuthorDraft();
+        });
+      }
+
+      function csvCell(value) {
+        const text = String(value || "");
+        if (/[",\n\r]/.test(text)) {
+          return `"${text.replace(/"/g, '""')}"`;
+        }
+        return text;
+      }
+
+      function downloadTextFile(filename, mimeType, text) {
+        const blob = new Blob([text], { type: mimeType });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.download = filename;
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+        URL.revokeObjectURL(url);
+      }
+
+      function rowsToCsv(rows) {
+        return [
+          authoringCsvColumns.join(","),
+          ...rows.map(row => authoringCsvColumns.map(column => csvCell(row[column])).join(","))
+        ].join("\n");
+      }
+
+      function rowsGroupedByCourse(rows) {
+        return rows.reduce((groups, row) => {
+          const courseId = row.course_id || DEFAULT_COURSE_ID;
+          groups[courseId] ||= [];
+          groups[courseId].push(row);
+          return groups;
+        }, {});
+      }
+
+      function timestampForFilename(date = new Date()) {
+        const pad = value => String(value).padStart(2, "0");
+        return [
+          date.getFullYear(),
+          pad(date.getMonth() + 1),
+          pad(date.getDate())
+        ].join("-") + `-${pad(date.getHours())}${pad(date.getMinutes())}`;
+      }
+
+      function exportAuthorRowsAsCsv() {
+        if (!authorRows.length) {
+          updateAuthorStatus("ยังไม่มี draft สำหรับ export");
+          return;
+        }
+        const groups = rowsGroupedByCourse(authorRows);
+        const timestamp = timestampForFilename();
+        Object.entries(groups).forEach(([courseId, rows]) => {
+          downloadTextFile(
+            `${timestamp}-${courseId}-writing-import.csv`,
+            "text/csv;charset=utf-8",
+            rowsToCsv(rows)
+          );
+        });
+        updateAuthorStatus(`Export CSV แล้ว ${authorRows.length} ข้อ แยกเป็น ${Object.keys(groups).length} วิชา`);
+      }
+
+      function exportAuthorRowsAsJson() {
+        if (!authorRows.length) {
+          updateAuthorStatus("ยังไม่มี draft สำหรับ export");
+          return;
+        }
+        downloadTextFile(
+          `${timestampForFilename()}-lexicore-writing-drafts.json`,
+          "application/json;charset=utf-8",
+          JSON.stringify(authorRows, null, 2)
+        );
+        updateAuthorStatus(`Export JSON แล้ว ${authorRows.length} ข้อ`);
+      }
+
+      function setFormValue(name, value) {
+        const field = authoringForm.elements[name];
+        if (field) field.value = value || "";
+      }
+
+      function loadAuthorRowIntoForm(questionId) {
+        const row = authorRows.find(item => item.question_id === questionId);
+        if (!row) {
+          updateAuthorStatus("หา draft นี้ไม่เจอใน browser storage");
+          return;
+        }
+        editingAuthorId = row.question_id;
+        setFormValue("course_id", row.course_id || DEFAULT_COURSE_ID);
+        setFormValue("level", row.level || "2");
+        setFormValue("title", row.title || "");
+        setFormValue("module", row.module || "");
+        setFormValue("source", row.source || "");
+        setFormValue("scenario", row.scenario || "");
+        setFormValue("question", row.question || "");
+        setFormValue("model_answer", row.model_answer || "");
+        setFormValue("hints", [row.hint_1, row.hint_2, row.hint_3].filter(Boolean).join("\n"));
+        selectedAuthorStatutes = normalizeAuthorStatutes(row.statutes);
+        renderAuthorStatuteOptions(row.course_id || DEFAULT_COURSE_ID);
+        syncSelectedAuthorStatutes();
+        authorSubmitBtn.textContent = "บันทึกและ preview";
+        document.getElementById("authoringBox").open = true;
+        updateAuthorStatus("โหลด draft กลับมาแก้ไขแล้ว");
+      }
+
+      function startNewAuthorDraft() {
+        editingAuthorId = null;
+        authoringForm.reset();
+        authorCourse.value = state.courseId;
+        authorLevel.value = String(state.level || 2);
+        selectedAuthorStatutes = [];
+        renderAuthorStatuteOptions(authorCourse.value);
+        syncSelectedAuthorStatutes();
+        authorSubmitBtn.textContent = "เพิ่มและ preview";
+        updateAuthorStatus("เริ่มข้อใหม่แล้ว");
+      }
+
+      function deleteAuthorDraft(questionId) {
+        const rowIndex = authorRows.findIndex(item => item.question_id === questionId);
+        if (rowIndex === -1) {
+          updateAuthorStatus("หา draft นี้ไม่เจอใน browser storage");
+          return;
+        }
+        const deletedTitle = authorRows[rowIndex].title || "draft";
+        authorRows.splice(rowIndex, 1);
+        saveAuthorRows();
+
+        const questionIndex = questions.findIndex(item => item.id === questionId && item.authorDraft);
+        if (questionIndex >= 0) {
+          questions.splice(questionIndex, 1);
+        }
+        unmarkCompleted(questionId);
+
+        if (editingAuthorId === questionId) {
+          startNewAuthorDraft();
+        }
+
+        const filtered = visibleQuestions();
+        state.index = Math.min(state.index, Math.max(filtered.length - 1, 0));
+        resetQuestionState();
+        updateAuthorStatus(`ลบ ${deletedTitle} แล้ว`);
+        render();
       }
 
       function renderCourseTabs() {
@@ -1735,7 +2440,7 @@
         list.innerHTML = filtered.map((q, i) => `
           <button class="question-tab ${i === state.index ? "active" : ""} ${isCompleted(q.id) ? "done" : ""}" data-index="${i}">
             <strong>ข้อ ${i + 1}</strong>
-            <span>Level ${q.level} · ${q.module}</span>
+            <span>Level ${q.level} · ${q.module}${q.authorDraft ? " · เพิ่มเอง" : ""}</span>
             ${isCompleted(q.id) ? `<em class="done-badge">ทำแล้ว</em>` : ""}
           </button>
         `).join("");
@@ -1767,6 +2472,7 @@
             <span class="pill">${labelType(q.type)}</span>
             <span class="pill">${q.module}</span>
             <span class="pill">${q.source}</span>
+            ${q.authorDraft ? `<span class="pill">Draft</span>` : ""}
           </div>
           <div class="statute-row">
             <div class="statute-row-label">มาตราที่เกี่ยวข้อง</div>
@@ -1824,6 +2530,8 @@
             <button id="hintBtn">ขอคำใบ้ (${state.hintsUsed}/3)</button>
             <button class="primary" id="submitBtn">ส่งคำตอบ</button>
             ${q.type === "subjective" ? `<button id="answerBtn">ดูเฉลย</button>` : ""}
+            ${q.authorDraft ? `<button id="editDraftBtn" type="button">แก้ไข draft</button>` : ""}
+            ${q.authorDraft ? `<button id="deleteDraftBtn" type="button">ลบ draft</button>` : ""}
             <button id="resetBtn">เริ่มข้อนี้ใหม่</button>
           </div>
           <div id="hintArea"></div>
@@ -1836,6 +2544,10 @@
         document.getElementById("submitBtn").addEventListener("click", submitAnswer);
         if (q.type === "subjective") {
           document.getElementById("answerBtn").addEventListener("click", () => showModelAnswer(q));
+        }
+        if (q.authorDraft) {
+          document.getElementById("editDraftBtn").addEventListener("click", () => loadAuthorRowIntoForm(q.id));
+          document.getElementById("deleteDraftBtn").addEventListener("click", () => deleteAuthorDraft(q.id));
         }
         document.getElementById("resetBtn").addEventListener("click", () => {
           unmarkCompleted(q.id);
@@ -2080,26 +2792,119 @@
           steps: q.criteria.map(c => c.label),
           highlights: []
         };
-        const paragraph = answer.paragraph || answer.steps.join(" ");
+        const answerContext = {
+          ...answer,
+          courseId: answer.courseId || q.courseId,
+          statutes: answer.statutes || q.statutes
+        };
+        const paragraph = answerContext.paragraph || answerContext.steps.join(" ");
         const highlights = answer.highlights || [];
         document.getElementById("answerAreaReveal").innerHTML = `
           <div class="answer-box">
             <h3>แนวเฉลย</h3>
-            <div class="answer-source">${answer.source}</div>
+            <div class="answer-source">${answerContext.source}</div>
             ${highlights.length ? `<div class="key-points">${highlights.map(item => `<span class="key-point ${item.type}">${item.text}</span>`).join("")}</div>` : ""}
-            <div class="model-paragraph">${formatModelParagraph(paragraph)}</div>
+            <div class="model-paragraph">${formatModelAnswer(paragraph, answerContext.steps, answerContext)}</div>
             <details open>
               <summary>ดูโครงสร้างการตอบแบบเป็นขั้น</summary>
-              <ol>${answer.steps.map(step => `<li>${cleanAnswerStep(step)}</li>`).join("")}</ol>
+              <ol>${answerContext.steps.map(step => `<li>${cleanAnswerStep(step)}</li>`).join("")}</ol>
             </details>
           </div>
         `;
       }
 
-      function formatModelParagraph(paragraph) {
-        const text = String(paragraph || "")
+      function normalizeModelAnswerText(text) {
+        return String(text || "")
           .replace(/\s+(ต่อมา|นอกจากนี้|อย่างไรก็ดี|เมื่อ|ดังนั้น|หาก|แนวตอบจึงควรสรุปว่า)/g, "\n$1")
-          .replace(/\s+(ประเด็นต้องแยก|ต้องเริ่มจากแยกว่า|ข้อเท็จจริงเป็น|หนึ่งครอบครอง|โจทย์นี้ต้องแยก)/g, "\n$1");
+          .replace(/\s+(ประเด็นต้องแยก|ต้องเริ่มจากแยกว่า|ข้อเท็จจริงเป็น|หนึ่งครอบครอง|โจทย์นี้ต้องแยก)/g, "\n$1")
+          .trim();
+      }
+
+      function stripAnswerStepLabel(text) {
+        return cleanAnswerStep(text)
+          .replace(/^(?:หลักกฎหมาย|วินิจฉัย\/ปรับบท|วินิจฉัย|ปรับบท|สรุป|Rule|Application|Conclusion)\s*[:：-]?\s*/iu, "")
+          .trim();
+      }
+
+      function sectionHtml(title, text) {
+        return `
+          <section class="model-answer-section">
+            <h4>${title}</h4>
+            ${formatModelParagraph(text)}
+          </section>
+        `;
+      }
+
+      function splitModelAnswerLawBlock(paragraph) {
+        const text = String(paragraph || "");
+        const marker = "ตัวบทมาตราเต็ม:";
+        const markerIndex = text.indexOf(marker);
+        if (markerIndex === -1) {
+          return {
+            answerText: text,
+            lawBlock: ""
+          };
+        }
+        return {
+          answerText: text.slice(0, markerIndex).trim(),
+          lawBlock: text.slice(markerIndex).trim()
+        };
+      }
+
+      function statuteLawBlockForAnswer(answerContext, existingLawBlock) {
+        const statutes = answerContext.statutes || [];
+        const entries = statutes
+          .map(statute => {
+            const entry = statuteEntry(statute, answerContext.courseId);
+            if (!entry || typeof entry === "string" || isPlaceholderStatuteText(entry.text)) return "";
+            const text = statuteContentForDisplay(entry, statute).join("\n");
+            return `มาตรา ${statuteButtonText(statute)}: ${entry.title}\n${text}`;
+          })
+          .filter(Boolean);
+
+        if (!entries.length) return existingLawBlock;
+        return `ตัวบทมาตราเต็ม:\n${entries.join("\n\n")}`;
+      }
+
+      function formatModelAnswer(paragraph, steps = [], answerContext = {}) {
+        const { answerText, lawBlock } = splitModelAnswerLawBlock(paragraph);
+        const fullLawBlock = statuteLawBlockForAnswer(answerContext, lawBlock);
+        const sections = {
+          law: [],
+          application: []
+        };
+
+        steps.map(cleanAnswerStep).filter(Boolean).forEach(step => {
+          const plainStep = stripAnswerStepLabel(step);
+          if (/^(?:หลักกฎหมาย|Rule\b|มาตรา|หลัก\s)/u.test(step)) {
+            if (plainStep) sections.law.push(plainStep);
+          } else if (/^(?:สรุป|Conclusion\b)|ดังนั้น|จึง/u.test(step)) {
+            if (plainStep) sections.application.push(plainStep);
+          } else if (/^(?:วินิจฉัย\/ปรับบท|วินิจฉัย|ปรับบท|Application\b)|เมื่อนำ|เมื่อ|ระหว่าง|ข้อเท็จจริง/u.test(step)) {
+            if (plainStep) sections.application.push(plainStep);
+          }
+        });
+
+        if (sections.law.length || sections.application.length || fullLawBlock) {
+          const fallbackText = normalizeModelAnswerText(answerText);
+          const lawText = [sections.law.join(" ").trim() || "พิจารณาหลักกฎหมายและมาตราที่เกี่ยวข้องตามโจทย์", fullLawBlock]
+            .filter(Boolean)
+            .join("\n\n");
+          const applicationText = sections.application.join(" ").trim() || fallbackText;
+          return [
+            sectionHtml("หลักกฎหมาย", lawText),
+            sectionHtml("วินิจฉัย/ปรับบท", applicationText)
+          ].join("");
+        }
+
+        return [
+          sectionHtml("หลักกฎหมาย", "พิจารณาหลักกฎหมายและมาตราที่เกี่ยวข้องตามโจทย์"),
+          sectionHtml("วินิจฉัย/ปรับบท", answerText)
+        ].join("");
+      }
+
+      function formatModelParagraph(paragraph) {
+        const text = normalizeModelAnswerText(paragraph);
         const parts = text
           .split(/\n+/)
           .map(part => part.trim())

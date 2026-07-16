@@ -44,6 +44,14 @@ For an existing course, edit the matching file under:
 content/courses/<course_id>/question-bank/
 ```
 
+For questions exported from the web authoring form, keep them as separate CSV batches under:
+
+```text
+content/courses/<course_id>/question-bank/imports/
+```
+
+The trial-data build reads the main `writing-question-table-<course_id>.csv` file first, then appends every `imports/*.csv` file in filename order. This keeps the curated table small and makes it easy to remove or replace a whole imported batch.
+
 After editing CSV content, rebuild the static trial data:
 
 ```sh
@@ -59,6 +67,7 @@ Then open `docs/trial-practice.html` and smoke-test the new questions.
 Commit:
 
 - CSV/YAML/MD source content
+- approved `question-bank/imports/*.csv` batches
 - course/module metadata
 - statute summary CSVs
 - `.gitkeep` files that preserve empty folders
