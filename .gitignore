@@ -33,6 +33,14 @@ outputs/
 tmp/
 temp/
 
+# Browser-exported authoring downloads.
+# Approved CSV batches should live under content/courses/*/question-bank/imports/.
+/*-writing-import.csv
+/lexicore-*-writing-import.csv
+/*-lexicore-writing-drafts.json
+/lexicore-custom-writing-questions.csv
+/lexicore-custom-writing-questions.json
+
 # Binary/generated content authoring artifacts.
 # Keep canonical CSV/YAML/MD sources in content/courses.
 content/courses/**/question-bank/*.xlsx
