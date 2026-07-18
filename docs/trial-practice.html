@@ -1838,20 +1838,15 @@
         question.courseId = question.courseId || DEFAULT_COURSE_ID;
       });
 
-      const progressKey = "lexicore_trial_practice_progress_v1";
       const state = {
         courseId: DEFAULT_COURSE_ID,
         index: 0,
         level: 1,
         search: "",
         statusFilter: "all",
-        completed: loadProgress(),
-        hintsUsed: 0,
-        selected: {},
-        matches: {},
-        drops: {},
-        fontStep: 0,
-        answerShown: false
+        completed: {},
+        attempts: {},
+        fontStep: 0
       };
       const list = document.getElementById("questionList");
       const courseTabs = document.getElementById("courseTabs");
@@ -2037,22 +2032,6 @@
         return `custom-${courseId}-l${level}-${Date.now().toString(36)}`;
       }
 
-      function loadProgress() {
-        try {
-          return JSON.parse(localStorage.getItem(progressKey) || "{}");
-        } catch (error) {
-          return {};
-        }
-      }
-
-      function saveProgress() {
-        try {
-          localStorage.setItem(progressKey, JSON.stringify(state.completed));
-        } catch (error) {
-          // Ignore storage failures in local file mode.
-        }
-      }
-
       function updateAuthorStatus(message) {
         if (!authorStatus) return;
         const count = authorRows.length;
@@ -2061,16 +2040,31 @@
 
       function markCompleted(questionId) {
         state.completed[questionId] = new Date().toISOString();
-        saveProgress();
       }
 
       function unmarkCompleted(questionId) {
         delete state.completed[questionId];
-        saveProgress();
       }
 
       function isCompleted(questionId) {
         return Boolean(state.completed[questionId]);
+      }
+
+      function freshAttempt() {
+        return {
+          hintsUsed: 0,
+          selected: "",
+          matches: {},
+          drops: {},
+          subjectiveAnswer: "",
+          modelAnswerHtml: "",
+          resultHtml: ""
+        };
+      }
+
+      function attemptFor(questionId) {
+        state.attempts[questionId] ||= freshAttempt();
+        return state.attempts[questionId];
       }
 
       function currentFontSize() {
@@ -2122,14 +2116,12 @@
         questionSearch.addEventListener("input", () => {
           state.search = questionSearch.value;
           state.index = 0;
-          resetQuestionState();
           render();
         });
         statusFilters.querySelectorAll("button").forEach(button => {
           button.addEventListener("click", () => {
             state.statusFilter = button.dataset.statusFilter;
             state.index = 0;
-            resetQuestionState();
             render();
           });
         });
@@ -2225,7 +2217,6 @@
           state.search = "";
           questionSearch.value = "";
           state.index = Math.max(visibleQuestions().findIndex(item => item.id === question.id), 0);
-          resetQuestionState();
           authorCourse.value = courseId;
           authorLevel.value = String(level);
           renderAuthorStatuteOptions(courseId);
@@ -2386,7 +2377,7 @@
 
         const filtered = visibleQuestions();
         state.index = Math.min(state.index, Math.max(filtered.length - 1, 0));
-        resetQuestionState();
+        resetQuestionState(questionId);
         updateAuthorStatus(`ลบ ${deletedTitle} แล้ว`);
         render();
       }
@@ -2410,7 +2401,6 @@
             state.search = "";
             state.statusFilter = "all";
             questionSearch.value = "";
-            resetQuestionState();
             render();
           });
         });
@@ -2425,7 +2415,6 @@
           button.addEventListener("click", () => {
             state.level = Number(button.dataset.level);
             state.index = 0;
-            resetQuestionState();
             render();
           });
         });
@@ -2447,18 +2436,18 @@
         list.querySelectorAll("button").forEach(button => {
           button.addEventListener("click", () => {
             state.index = Number(button.dataset.index);
-            resetQuestionState();
             render();
           });
         });
       }
 
-      function resetQuestionState() {
-        state.hintsUsed = 0;
-        state.selected = {};
-        state.matches = {};
-        state.drops = {};
-        state.answerShown = false;
+      function resetQuestionState(questionId) {
+        if (questionId) {
+          state.attempts[questionId] = freshAttempt();
+          return;
+        }
+        const q = visibleQuestions()[state.index];
+        if (q) state.attempts[q.id] = freshAttempt();
       }
 
       function labelType(type) {
@@ -2506,6 +2495,7 @@
           `;
           return;
         }
+        const attempt = attemptFor(q.id);
         panel.innerHTML = `
           ${meta(q)}
           <div class="reader-toolbar" aria-label="เครื่องมืออ่านคำถาม">
@@ -2524,10 +2514,10 @@
             ${q.scenario ? `<div class="scenario">${q.scenario}</div>` : ""}
             <div class="question-text">${q.question}</div>
             <div id="answerArea">${renderAnswer(q)}</div>
-            <div id="answerAreaReveal"></div>
+            <div id="answerAreaReveal">${attempt.modelAnswerHtml}</div>
           </div>
           <div class="controls">
-            <button id="hintBtn">ขอคำใบ้ (${state.hintsUsed}/3)</button>
+            <button id="hintBtn" ${attempt.hintsUsed >= q.hints.length ? "disabled" : ""}>ขอคำใบ้ (${attempt.hintsUsed}/3)</button>
             <button class="primary" id="submitBtn">ส่งคำตอบ</button>
             ${q.type === "subjective" ? `<button id="answerBtn">ดูเฉลย</button>` : ""}
             ${q.authorDraft ? `<button id="editDraftBtn" type="button">แก้ไข draft</button>` : ""}
@@ -2535,7 +2525,7 @@
             <button id="resetBtn">เริ่มข้อนี้ใหม่</button>
           </div>
           <div id="hintArea"></div>
-          <div id="resultArea"></div>
+          <div id="resultArea">${attempt.resultHtml}</div>
         `;
         bindAnswer(q);
         bindStatuteButtons(panel, q);
@@ -2551,7 +2541,7 @@
         }
         document.getElementById("resetBtn").addEventListener("click", () => {
           unmarkCompleted(q.id);
-          resetQuestionState();
+          resetQuestionState(q.id);
           const remaining = visibleQuestions();
           state.index = Math.min(state.index, Math.max(remaining.length - 1, 0));
           render();
@@ -2617,10 +2607,11 @@
       }
 
       function renderAnswer(q) {
+        const attempt = attemptFor(q.id);
         if (q.type === "mcq") {
           return `<div class="choices">${q.choices.map(c => `
             <label class="choice">
-              <input type="radio" name="choice" value="${c.id}" />
+              <input type="radio" name="choice" value="${escapeHtml(c.id)}" ${attempt.selected === c.id ? "checked" : ""} />
               <span>${c.text}</span>
             </label>
           `).join("")}</div>`;
@@ -2631,7 +2622,7 @@
               <div>${p.prompt}</div>
               <select data-match="${i}">
                 <option value="">เลือกคำตอบ</option>
-                ${q.options.map(o => `<option value="${o}">${o}</option>`).join("")}
+                ${q.options.map(o => `<option value="${escapeHtml(o)}" ${attempt.matches[i] === o ? "selected" : ""}>${o}</option>`).join("")}
               </select>
             </div>
           `).join("")}</div>`;
@@ -2641,24 +2632,35 @@
             <div class="drag-grid">
               <div>
                 <h3>ข้อเท็จจริง</h3>
-                ${q.dragItems.map(item => `<div class="drag-item" draggable="true" data-drag="${item.id}">${item.text}</div>`).join("")}
+                ${q.dragItems.map(item => `<div class="drag-item ${attempt.drops[item.id] ? "used" : ""}" draggable="true" data-drag="${item.id}">${item.text}</div>`).join("")}
               </div>
               <div>
                 <h3>องค์ประกอบ</h3>
-                ${q.dropZones.map(zone => `<div class="drop-zone" data-drop="${zone.id}"><h3>${zone.label}</h3><div class="small">วางข้อเท็จจริงที่นี่</div></div>`).join("")}
+                ${q.dropZones.map(zone => {
+                  const placed = q.dragItems.find(item => attempt.drops[item.id] === zone.id);
+                  return `<div class="drop-zone" data-drop="${zone.id}"><h3>${zone.label}</h3><div class="small">${placed ? placed.text : "วางข้อเท็จจริงที่นี่"}</div></div>`;
+                }).join("")}
               </div>
             </div>
           `;
         }
-        return `<textarea id="subjectiveAnswer" placeholder="พิมพ์คำตอบแบบ หลักกฎหมาย -> วินิจฉัย/ปรับบท -> สรุป"></textarea>
+        return `<textarea id="subjectiveAnswer" placeholder="พิมพ์คำตอบแบบ หลักกฎหมาย -> วินิจฉัย/ปรับบท -> สรุป">${escapeHtml(attempt.subjectiveAnswer)}</textarea>
           <p class="small">หน้านี้ใช้ตัวตรวจคำตอบแบบทดลองจาก keyword/rubric ในเครื่อง ยังไม่เรียก LLM API จริง</p>`;
       }
 
       function bindAnswer(q) {
+        const attempt = attemptFor(q.id);
+        if (q.type === "mcq") {
+          panel.querySelectorAll("input[name='choice']").forEach(input => {
+            input.addEventListener("change", () => {
+              attempt.selected = input.value;
+            });
+          });
+        }
         if (q.type === "matching") {
           panel.querySelectorAll("select[data-match]").forEach(select => {
             select.addEventListener("change", () => {
-              state.matches[select.dataset.match] = select.value;
+              attempt.matches[select.dataset.match] = select.value;
             });
           });
         }
@@ -2673,29 +2675,36 @@
               event.preventDefault();
               if (!dragged) return;
               const item = q.dragItems.find(d => d.id === dragged);
-              state.drops[dragged] = zone.dataset.drop;
+              attempt.drops[dragged] = zone.dataset.drop;
               zone.querySelector(".small").textContent = item.text;
               panel.querySelector(`[data-drag="${dragged}"]`).classList.add("used");
             });
+          });
+        }
+        if (q.type === "subjective") {
+          const textarea = document.getElementById("subjectiveAnswer");
+          textarea.addEventListener("input", () => {
+            attempt.subjectiveAnswer = textarea.value;
           });
         }
       }
 
       function showHint() {
         const q = visibleQuestions()[state.index];
-        if (state.hintsUsed >= q.hints.length) return;
-        state.hintsUsed += 1;
+        const attempt = attemptFor(q.id);
+        if (attempt.hintsUsed >= q.hints.length) return;
+        attempt.hintsUsed += 1;
         document.getElementById("hintArea").innerHTML = `
           <div class="hint-box">
-            <strong>Hint ${state.hintsUsed}</strong>
-            <div>${q.hints[state.hintsUsed - 1]}</div>
+            <strong>Hint ${attempt.hintsUsed}</strong>
+            <div>${q.hints[attempt.hintsUsed - 1]}</div>
             ${renderStatuteDetails(q)}
-            <div class="small">ใช้ hint แล้ว โบนัสจำลองจะลดลง ${state.hintsUsed} คะแนน</div>
+            <div class="small">ใช้ hint แล้ว โบนัสจำลองจะลดลง ${attempt.hintsUsed} คะแนน</div>
           </div>
         `;
         bindStatuteButtons(document.getElementById("hintArea"), q);
-        document.getElementById("hintBtn").textContent = `ขอคำใบ้ (${state.hintsUsed}/3)`;
-        if (state.hintsUsed >= 3) document.getElementById("hintBtn").disabled = true;
+        document.getElementById("hintBtn").textContent = `ขอคำใบ้ (${attempt.hintsUsed}/3)`;
+        if (attempt.hintsUsed >= 3) document.getElementById("hintBtn").disabled = true;
       }
 
       function submitAnswer() {
@@ -2710,7 +2719,6 @@
           if (state.statusFilter === "todo") {
             const remaining = visibleQuestions();
             state.index = Math.min(state.index, Math.max(remaining.length - 1, 0));
-            resetQuestionState();
             render();
             return true;
           }
@@ -2799,7 +2807,7 @@
         };
         const paragraph = answerContext.paragraph || answerContext.steps.join(" ");
         const highlights = answer.highlights || [];
-        document.getElementById("answerAreaReveal").innerHTML = `
+        const html = `
           <div class="answer-box">
             <h3>แนวเฉลย</h3>
             <div class="answer-source">${answerContext.source}</div>
@@ -2811,6 +2819,14 @@
             </details>
           </div>
         `;
+        attemptFor(q.id).modelAnswerHtml = html;
+        markCompleted(q.id);
+        document.getElementById("answerAreaReveal").innerHTML = html;
+        renderList();
+        const course = currentCourse();
+        const totalInCourse = courseQuestions().length;
+        const doneInCourse = courseQuestions().filter(question => isCompleted(question.id)).length;
+        summary.textContent = `${course.code} ${course.title} · ${doneInCourse}/${totalInCourse} ข้อทำแล้ว`;
       }
 
       function normalizeModelAnswerText(text) {
@@ -2913,9 +2929,11 @@
       }
 
       function renderResult({ score, max, title, lines, good }) {
-        const hintPenalty = state.hintsUsed;
+        const q = visibleQuestions()[state.index];
+        const attempt = q ? attemptFor(q.id) : freshAttempt();
+        const hintPenalty = attempt.hintsUsed;
         const finalScore = Math.max(0, score - hintPenalty);
-        document.getElementById("resultArea").innerHTML = `
+        const html = `
           <div class="result ${good ? "good" : "bad"}">
             <div class="score">${finalScore}/${max}</div>
             <strong>${title}</strong>
@@ -2923,6 +2941,8 @@
             <p class="small">คะแนนนี้หัก hint penalty แล้ว ${hintPenalty} คะแนน</p>
           </div>
         `;
+        attempt.resultHtml = html;
+        document.getElementById("resultArea").innerHTML = html;
       }
 
       function gradeMcq(q) {
@@ -2931,6 +2951,7 @@
           renderResult({ score: 0, max: 1, title: "ยังไม่ได้เลือกคำตอบ", lines: ["เลือกตัวเลือกก่อนส่งคำตอบ"], good: false });
           return false;
         }
+        attemptFor(q.id).selected = selected.value;
         const choice = q.choices.find(c => c.id === selected.value);
         renderResult({
           score: choice.correct ? 1 : 0,
@@ -2943,9 +2964,10 @@
       }
 
       function gradeMatching(q) {
+        const attempt = attemptFor(q.id);
         let correct = 0;
         const lines = q.pairs.map((p, i) => {
-          const answer = state.matches[i] || "";
+          const answer = attempt.matches[i] || "";
           const ok = answer === p.answer;
           if (ok) correct += 1;
           return `${ok ? "ถูก" : "ผิด"}: ${p.prompt} -> คำตอบที่ถูกคือ ${p.answer}`;
@@ -2955,10 +2977,11 @@
       }
 
       function gradeDrag(q) {
+        const attempt = attemptFor(q.id);
         let correct = 0;
         const lines = q.dragItems.map(item => {
           const expected = q.mapping[item.id];
-          const actual = state.drops[item.id];
+          const actual = attempt.drops[item.id];
           const zone = q.dropZones.find(z => z.id === expected);
           const ok = actual === expected;
           if (ok) correct += 1;
@@ -2969,7 +2992,10 @@
       }
 
       function gradeSubjective(q) {
-        const answer = (document.getElementById("subjectiveAnswer").value || "").toLowerCase();
+        const attempt = attemptFor(q.id);
+        const textareaValue = document.getElementById("subjectiveAnswer").value || "";
+        attempt.subjectiveAnswer = textareaValue;
+        const answer = textareaValue.toLowerCase();
         if (answer.trim().length < 20) {
           renderResult({ score: 0, max: q.criteria.reduce((a, c) => a + c.points, 0), title: "คำตอบยังสั้นเกินไป", lines: ["ลองเขียนให้ครบหลักกฎหมาย วินิจฉัย/ปรับบท และสรุป"], good: false });
           return false;
